@@ -5,15 +5,19 @@ import { FcGoogle } from "react-icons/fc";
 import Button from '../../components/Button';
 import { useState } from "react";
 import { loginSchema } from "../../constants/yupSchemas";
-import { API } from '../../constants/api';
-import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { Links } from '../../constants/links'
+import { loginAction } from "../../service/api";
+import useAuthStore from "../../context/authStore";
+import { useNavigate } from "react-router-dom";
+import { registerAction } from "../../service/api";
 
 export function LoginPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const setToken = useAuthStore((state) => state.setToken);
+  const navigate = useNavigate()
 
   const {
     register,
@@ -25,15 +29,16 @@ export function LoginPage() {
   const onSubmit = async(data, e) => {
     setIsLoading(true);
 
-    axios.post(`${API.base_link}/auth/authenticate`, data).then(response => {
-      console.log(response);
-      setErrorMessage(null);
-      setIsLoading(false);
-    }).catch(e => {
-      console.log(e);
-      setErrorMessage(e.response?.data.message);
-      setIsLoading(false);
-    });
+    const loginData = await loginAction(data);
+    setIsLoading(false);
+
+    if(loginData.error) {
+      setErrorMessage(loginData.error);
+      return 
+    }
+    setToken(loginData.token);
+    setErrorMessage(null);
+    navigate(Links.courses);
   }
 
   return (

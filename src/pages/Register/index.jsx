@@ -7,14 +7,17 @@ import { Links } from "../../constants/links";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../constants/yupSchemas";
-import axios from 'axios';
-import { API } from '../../constants/api';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import useAuthStore from "../../context/authStore";
+import { useNavigate } from "react-router-dom";
+import { registerAction } from "../../service/api";
 
 const RegisterPage = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const setToken = useAuthStore((state) => state.setToken);
+  const navigate = useNavigate()
 
   const {
     register,
@@ -26,15 +29,16 @@ const RegisterPage = () => {
   const onSubmit = async(data, e) => {
     setIsLoading(true);
 
-    axios.post(`${API.base_link}/auth/register`, data).then(response => {
-      console.log(response);
-      setErrorMessage(null);
-      setIsLoading(false)
-    }).catch(e => {
-      console.log(e);
-      setErrorMessage(e.response?.data.message);
-      setIsLoading(false);
-    });
+    const registerData = await registerAction(data);
+    setIsLoading(false);
+
+    if(registerData.error) {
+      setErrorMessage(registerData.error);
+      return 
+    }
+    setToken(registerData.token);
+    setErrorMessage(null);
+    navigate(Links.courses);
   }
   const onError = (errors, e) => console.log(errors, e)
 
