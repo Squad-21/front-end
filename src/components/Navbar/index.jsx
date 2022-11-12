@@ -1,9 +1,10 @@
 import { Sidebar } from "./Sidebar";
 import LogoImg from "../../images/laranja_logo.png";
 import styled from "styled-components";
-import { useMediaQuery } from "react-responsive";
 import { LoginNav } from "./Login";
 import { HomeNav } from "./Home";
+import { Links } from '../../constants/links'
+import { useIsDesktop } from '../../hooks/useIsDesktop'
 
 function subscribe() {
   console.log("inscrito");
@@ -11,22 +12,20 @@ function subscribe() {
 
 export function Navbar() {
   const pathname = window.location.pathname;
-  const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 640px)",
-  });
+  const isDesktopOrLaptop = useIsDesktop()
 
   return (
     <div className="bg-violet-550 h-12 sm:h-16">
-      {isDesktopOrLaptop && pathname === "/" && (
+      {isDesktopOrLaptop && pathname === Links.home && (
         <HomeNav subscribe={subscribe} />
       )}
-      {!isDesktopOrLaptop && pathname !== "/" && (
+      {!isDesktopOrLaptop && pathname !== Links.home && (
         <div>
           <Sidebar />
           <Img src={LogoImg} alt="logo" />
         </div>
       )}
-      {isDesktopOrLaptop && pathname === "/login" && <LoginNav />}
+      {isDesktopOrLaptop && pathname === Links.login && <LoginNav />}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import Logo from "../../components/Logo";
@@ -6,8 +7,15 @@ import { Links } from "../../constants/links";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../constants/yupSchemas";
+import axios from 'axios';
+import { API } from '../../constants/api';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 const RegisterPage = () => {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -15,13 +23,32 @@ const RegisterPage = () => {
   } = useForm({
     resolver: yupResolver(registerSchema),
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async(data, e) => {
+    setIsLoading(true);
+
+    axios.post(`${API.base_link}/auth/register`, data).then(response => {
+      console.log(response);
+      setErrorMessage(null);
+      setIsLoading(false)
+    }).catch(e => {
+      console.log(e);
+      setErrorMessage(e.response?.data.message);
+      setIsLoading(false);
+    });
+  }
+  const onError = (errors, e) => console.log(errors, e)
 
   return (
     <Container>
       <Logo />
       <Title>Registrar-se</Title>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit, onError)}>
+        {errorMessage && 
+          <Alert severity="error">
+            <AlertTitle>Erro</AlertTitle>
+            {errorMessage}
+          </Alert>
+        }
         <FormItem
           title={"Nome"}
           name={"name"}
@@ -45,9 +72,12 @@ const RegisterPage = () => {
           registerForm={register("password")}
         />
         <div className="mt-4"></div>
-        <Button title={"Registrar"} onClick={() => console.log("Click")} />
+        <Button 
+          title={"Registrar"} 
+          disabled={isLoading}
+        />
       </Form>
-      <Legend className="text-xs font-normal mt-7">
+      <Legend>
         Já tem conta?
         <LinkElement href={Links.login}>Faça login</LinkElement>
       </Legend>
@@ -64,7 +94,7 @@ const Container = styled.div`
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 2.5rem;
-  max-width: 20rem;
+  max-width: 30rem;
   margin-left: auto;
   margin-right: auto;
 `;
