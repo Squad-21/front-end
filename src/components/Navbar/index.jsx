@@ -1,10 +1,10 @@
 import { Sidebar } from "./Sidebar";
 import LogoImg from "../../images/laranja_logo.png";
-import styled from "styled-components";
 import { LoginNav } from "./Login";
 import { HomeNav } from "./Home";
-import { Links } from '../../constants/links'
-import { useIsDesktop } from '../../hooks/useIsDesktop'
+import { Links } from "../../constants/links";
+import { AuthBar } from "./Auth";
+import { useMediaQuery } from "@mui/material";
 
 function subscribe() {
   console.log("inscrito");
@@ -12,25 +12,35 @@ function subscribe() {
 
 export function Navbar() {
   const pathname = window.location.pathname;
-  const isDesktopOrLaptop = useIsDesktop()
+  const isDesktopOrLaptop = useMediaQuery("(min-width:926px)");
 
+  if (pathname === Links.home) {
+    return (
+      <div className="bg-violet-550 h-16">
+        <HomeNav subscribe={subscribe} />;
+      </div>
+    );
+  }
+  if (pathname === Links.login || pathname === Links.register) {
+    return (
+      <div className="bg-violet-550 h-16">
+        <LoginNav />;
+      </div>
+    );
+  }
+  if (isDesktopOrLaptop) {
+    return (
+      <div className="bg-violet-550 h-16">
+        <AuthBar subscribe={subscribe} />;
+      </div>
+    );
+  }
   return (
-    <div className="bg-violet-550 h-12 sm:h-16">
-      {isDesktopOrLaptop && pathname === Links.home && (
-        <HomeNav subscribe={subscribe} />
-      )}
-      {!isDesktopOrLaptop && pathname !== Links.home && (
-        <div>
-          <Sidebar />
-          <Img src={LogoImg} alt="logo" />
-        </div>
-      )}
-      {isDesktopOrLaptop && pathname === Links.login && <LoginNav />}
+    <div className="bg-violet-550 h-16">
+      <div>
+        <Sidebar />
+        <img className="w-10 ml-6 pt-2" src={LogoImg} alt="logo" />
+      </div>
     </div>
   );
 }
-
-const Img = styled.img`
-  width: 2.5rem;
-  margin-left: 1.5rem;
-`;
