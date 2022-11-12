@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import Logo from "../../components/Logo";
@@ -10,13 +10,23 @@ import { registerSchema } from "../../constants/yupSchemas";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import useAuthStore from "../../context/authStore";
+import useSettingsStore from "../../context/settingsStore";
 import { useNavigate } from "react-router-dom";
 import { registerAction } from "../../service/api";
 
 const RegisterPage = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const setToken = useAuthStore((state) => state.setToken);
+  const {
+    token,
+    setToken,
+    setUser
+  } = useAuthStore((state) => ({ 
+    token: state.token, 
+    setToken: state.setToken,
+    setUser: state.setUser
+  }));
+  const { toggleNotificationVisibility } = useSettingsStore((state) => ({ toggleNotificationVisibility: state.toggleNotificationVisibility }));
   const navigate = useNavigate()
 
   const {
@@ -37,10 +47,18 @@ const RegisterPage = () => {
       return 
     }
     setToken(registerData.token);
+    setUser(registerData.user);
     setErrorMessage(null);
+    toggleNotificationVisibility(true);
     navigate(Links.courses);
   }
   const onError = (errors, e) => console.log(errors, e)
+
+  useEffect(() => {
+    if(token) {
+      navigate(Links.courses);
+    }
+  },[])
 
   return (
     <Container>

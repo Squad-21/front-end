@@ -8,11 +8,12 @@ import AlertTitle from '@mui/material/AlertTitle';
 import useAuthStore from "../../context/authStore";
 import { useNavigate } from "react-router-dom";
 import { Links } from "../../constants/links";
+import Notification from "./Notification";
 
 const CoursesPage = () => {
     const [courses, setCourses] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
-    const {token} = useAuthStore((state) => ({ token: state.token }))
+    const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -40,6 +41,7 @@ const CoursesPage = () => {
                 </Alert>
             }
             <div>
+                <Notification />
             </div>
             <List>
                 {courses && 
