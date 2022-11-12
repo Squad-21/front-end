@@ -4,6 +4,7 @@ import { LoginPage } from "../pages/LoginPage";
 import { ErrorPage } from "../pages/Error";
 import RegisterPage from "../pages/Register";
 import { Links } from "../constants/links";
+import { CourseDashboard } from "../pages/Course/Dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ export const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
+    path: Links.courseDashboard,
+    element: <CourseDashboard />,
+  },
+  {
     path: "*",
     element: <ErrorPage />,
-  }
+  },
 ]);
