@@ -5,12 +5,22 @@ import axios from 'axios';
 import { API } from '../../constants/api';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import useAuthStore from "../../context/authStore";
+import { useNavigate } from "react-router-dom";
+import { Links } from "../../constants/links";
 
 const CoursesPage = () => {
     const [courses, setCourses] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const {token} = useAuthStore((state) => ({ token: state.token }))
+    const navigate = useNavigate()
 
     useEffect(() => {
+        if(!token) {
+            navigate(Links.login)
+            return 
+        }
+
         axios.get(`${API.base_link}/courses`)
         .then(res => {
             setCourses(res.data);
@@ -20,6 +30,7 @@ const CoursesPage = () => {
             setErrorMessage(e.response?.data.message);
         })
     },[])
+
     return ( 
         <Container>
             {errorMessage && 
@@ -28,6 +39,8 @@ const CoursesPage = () => {
                     {errorMessage}
                 </Alert>
             }
+            <div>
+            </div>
             <List>
                 {courses && 
                     courses.map(course => <Card course={course} key={course._id} />)

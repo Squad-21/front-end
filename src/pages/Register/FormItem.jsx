@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import InputText from '../../../components/InputText';
+import InputText from '../../components/InputText';
 
 const FormItem = ({
     title, 
