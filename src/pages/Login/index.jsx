@@ -3,20 +3,29 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FcGoogle } from "react-icons/fc";
 import Button from '../../components/Button';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginSchema } from "../../constants/yupSchemas";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { Links } from '../../constants/links'
 import { loginAction } from "../../service/api";
 import useAuthStore from "../../context/authStore";
+import useSettingsStore from "../../context/settingsStore";
 import { useNavigate } from "react-router-dom";
-import { registerAction } from "../../service/api";
 
 export function LoginPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const setToken = useAuthStore((state) => state.setToken);
+  const {
+    token,
+    setToken,
+    setUser
+  } = useAuthStore((state) => ({ 
+    token: state.token, 
+    setToken: state.setToken,
+    setUser: state.setUser
+  }));
+  const { toggleNotificationVisibility } = useSettingsStore((state) => ({ toggleNotificationVisibility: state.toggleNotificationVisibility }));
   const navigate = useNavigate()
 
   const {
@@ -36,10 +45,19 @@ export function LoginPage() {
       setErrorMessage(loginData.error);
       return 
     }
+
     setToken(loginData.token);
+    setUser(loginData.user);
     setErrorMessage(null);
+    toggleNotificationVisibility(true);
     navigate(Links.courses);
   }
+
+  useEffect(() => {
+    if(token) {
+      navigate(Links.courses);
+    }
+  },[])
 
   return (
     <div
