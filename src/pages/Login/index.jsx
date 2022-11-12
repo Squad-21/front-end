@@ -1,28 +1,40 @@
 import logoImg from "../../images/laranja_logo.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { FcGoogle } from "react-icons/fc";
-
-const schema = yup
-  .object({
-    email: yup
-      .string()
-      .email("Digite um email válido")
-      .required("Email obrigatório"),
-    password: yup.string().required("Digite sua senha"),
-  })
-  .required();
+import Button from '../../components/Button';
+import { useState } from "react";
+import { loginSchema } from "../../constants/yupSchemas";
+import { API } from '../../constants/api';
+import axios from 'axios';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { Links } from '../../constants/links'
 
 export function LoginPage() {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(loginSchema),
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async(data, e) => {
+    setIsLoading(true);
+
+    axios.post(`${API.base_link}/auth/authenticate`, data).then(response => {
+      console.log(response);
+      setErrorMessage(null);
+      setIsLoading(false);
+    }).catch(e => {
+      console.log(e);
+      setErrorMessage(e.response?.data.message);
+      setIsLoading(false);
+    });
+  }
 
   return (
     <div
@@ -32,6 +44,12 @@ export function LoginPage() {
       <img src={logoImg} alt="logo" />
       <h2 className="font-bold mt-8 text-xl">Login</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+        {errorMessage && 
+          <Alert severity="error">
+            <AlertTitle>Erro</AlertTitle>
+            {errorMessage}
+          </Alert>
+        }
         <label
           htmlFor="email"
           className="block ml-2 mt-16 mb-1 font-bold text-sm"
@@ -63,14 +81,12 @@ export function LoginPage() {
           {...register("password")}
         />
         <p className="text-red-600">{errors.password?.message}</p>
-        <p className="text-right text-xs font-extrabold mt-2 text-gray-550">
+        <p className="text-right text-xs font-extrabold mt-2 mb-2 text-gray-550">
           Esqueçeu a senha?
         </p>
-        <input
-          type="submit"
-          className="text-lg font-bold text-white bg-orange-650 w-full rounded 
-                     py-3 px-16 mt-4 cursor-pointer"
-          value="Entrar"
+        <Button
+          title="Entrar"
+          disabled={isLoading}
         />
       </form>
       <div id="ou" className="flex items-center mt-4">
@@ -87,7 +103,7 @@ export function LoginPage() {
       </button>
       <p className="text-xs font-normal mt-7">
         Não tem conta ainda?
-        <a href="/" className="font-extrabold underline">
+        <a href={Links.register} className="font-extrabold underline">
           Cadastre-se
         </a>
       </p>

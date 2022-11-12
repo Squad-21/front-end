@@ -13,3 +13,13 @@ export const registerSchema =
         password: yup.string().required("Digite sua senha"),
     })
     .required();
+
+export const loginSchema = yup
+    .object({
+    email: yup
+        .string()
+        .email("Digite um email válido")
+        .required("Email obrigatório"),
+    password: yup.string().required("Digite sua senha"),
+    })
+    .required();
