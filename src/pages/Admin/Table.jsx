@@ -21,9 +21,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useAuthStore from "../../context/authStore";
 import { deleteCourseAction } from '../../service/api';
+import { useNavigate } from 'react-router-dom';
+import { Links } from '../../constants/links'
 
 const ListOptions = ({course, getCourses}) => {
     const { token } = useAuthStore((state) => ({ token: state.token }));
+    const navigate = useNavigate();
 
     const handleDelete = async() => {
         const data = await deleteCourseAction(course._id, token);
@@ -38,7 +41,7 @@ const ListOptions = ({course, getCourses}) => {
     return (
         <List component="nav">
             <ListItemButton
-                onClick={() => console.log(course)}
+                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${course._id}/edit`)}
             >
                 <ListItemIcon>
                     <EditIcon />
