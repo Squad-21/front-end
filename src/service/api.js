@@ -1,5 +1,6 @@
 import { API } from "../constants/api";
 import axios from 'axios';
+import { fileToBase } from "./utils";
 
 export const registerAction = async(data) => {
     let res = {
@@ -51,6 +52,22 @@ export const getCoursesAction = async() => {
     return res
 }
 
+export const getOneCourseAction = async(courseID) => {
+    let res = {
+        course: null,
+        error: null
+    }
+
+    await axios.get(`${API.base_link}/courses/${courseID}`).then(response => {
+        res.course = response.data.course
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res
+}
+
 export const deleteCourseAction = async(courseID, token) => {
     let res = {
         message: null,
@@ -76,13 +93,39 @@ export const addCourseAction = async(data, token) => {
         error: null
     }
     const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data;'
+        'Authorization': `Bearer ${token}`
+    }
+    if(data.image.length) {
+        data.image = await fileToBase(data.image[0]);
+    } else {
+        data.image = null
     }
 
-    console.log(data);
-
     await axios.post(`${API.base_link}/courses`, data, { headers }).then(response => {
+        res.course = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res
+}
+
+export const editCourseAction = async(data, token, courseID) => {
+    let res = {
+        course: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+    if(data.image.length) {
+        data.image = await fileToBase(data.image[0]);
+    } else {
+        data.image = null
+    }
+
+    await axios.put(`${API.base_link}/courses/${courseID}`, data, { headers }).then(response => {
         res.course = response.data
     }).catch(e => {
         console.log(e)

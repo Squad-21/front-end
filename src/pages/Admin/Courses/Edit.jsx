@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,45 +6,62 @@ import { courseSchema } from '../../../constants/yupSchemas';
 import Button from '../../../components/Button'
 import FormItem from '../../../components/FormItem';
 import useAuthStore from '../../../context/authStore';
-import { addCourseAction } from '../../../service/api';
-import { useNavigate } from 'react-router-dom';
+import { editCourseAction, getOneCourseAction } from '../../../service/api';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
 
-const AddCoursePage = () => {
+const EditCoursePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate();
+    const { courseID } = useParams();
     const {
         register,
+        setValue,
         handleSubmit,
         formState: { errors },
-      } = useForm({
+    } = useForm({
         resolver: yupResolver(courseSchema),
-      });
-      const onSubmit = async(data, e) => {
-        if(data.image.length) {
-            data.image = data.image[0];
-        }
-        
+    });
+    const onSubmit = async(data, e) => {
         setIsLoading(true);
-        const addCourseData = await addCourseAction(data, token);
+        const editCourseData = await editCourseAction(data, token, courseID);
         setIsLoading(false)
 
-        if(addCourseData.error) {
-            setErrorMessage(addCourseData.error);
+        if(editCourseData.error) {
+            setErrorMessage(editCourseData.error);
             return 
         }
         setErrorMessage(null);
         navigate(`${Links.admin.root}/${Links.admin.courses}`);
-      }
-      const onError = (errors, e) => console.log(errors, e)
+    }
+
+    const fetchData = async() => {
+
+        const data = await getOneCourseAction(courseID);
+
+        if(data.error) {
+            setErrorMessage(data.error)
+            return 
+        }
+        return data.course
+    }
+
+    useEffect(() => {
+        fetchData()
+        .then(res => {
+            setValue('title', res.title, { shouldValidate: true });
+            setValue('description', res.description, { shouldValidate: true });
+        })
+        .catch(e => setErrorMessage('Erro ao obter dados'))
+    },[])
 
     return ( 
         <Container>
-            <Title>Adicionar Curso</Title>
-            <Form onSubmit={handleSubmit(onSubmit, onError)}>
+            <Title>Editar Curso</Title>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 {errorMessage && 
                     <Alert severity="error">
                         <AlertTitle>Erro</AlertTitle>
@@ -90,7 +107,7 @@ const AddCoursePage = () => {
     );
 }
  
-export default AddCoursePage;
+export default EditCoursePage;
 
 const Container = styled.div`
     padding: 1rem;
