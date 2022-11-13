@@ -24,7 +24,7 @@ export function Navbar() {
   if (pathname === Links.login || pathname === Links.register) {
     return (
       <div className="bg-violet-550 h-16">
-        <LoginNav />;
+        <LoginNav />
       </div>
     );
   }

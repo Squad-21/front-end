@@ -13,7 +13,7 @@ export function SearchBar() {
         size="small"
         sx={{
           backgroundColor: "white",
-          borderRadius: "4px",
+          borderRadius: "4px 0 0 4px",
           "& label.Mui-focused": {
             color: "#FE2F01",
           },
@@ -30,7 +30,17 @@ export function SearchBar() {
           },
         }}
       />
-      <IconButton type="submit" aria-label="search">
+      <IconButton
+        type="submit"
+        aria-label="search"
+        sx={{
+          backgroundColor: "white",
+          borderRadius: "0 4px 4px 0",
+          "&.MuiButtonBase-root:hover": {
+            backgroundColor: "white",
+          },
+        }}
+      >
         <SearchIcon style={{ fill: "blue" }} />
       </IconButton>
     </form>
