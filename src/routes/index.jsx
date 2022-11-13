@@ -5,6 +5,7 @@ import { ErrorPage } from "../pages/Error";
 import RegisterPage from "../pages/Register";
 import { Links } from "../constants/links";
 import CoursesPage from "../pages/Courses";
+import AdminPage from "../pages/Admin";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
   {
     path: Links.courses,
     element: <CoursesPage />,
+  },
+  {
+    path: Links.admin,
+    element: <AdminPage />,
   },
   {
     path: "*",
