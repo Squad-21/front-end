@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { default as TableElement } from '@mui/material/Table';
 import { 
     TableContainer,
@@ -6,13 +7,54 @@ import {
     TableRow,
     TableCell,
     IconButton,
-    Typography
+    Typography,
+    Popover,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText 
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { formatDate } from '../../service/utils';
 import { Style } from '../../constants/style';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+const ListOptions = ({course}) => {
+    return (
+        <List component="nav">
+            <ListItemButton
+                onClick={() => console.log(course)}
+            >
+                <ListItemIcon>
+                    <EditIcon />
+                </ListItemIcon>
+                <ListItemText primary="Editar" />
+            </ListItemButton>
+            <ListItemButton
+                onClick={() => console.log(course)}
+            >
+                <ListItemIcon>
+                    <DeleteIcon sx={{fill: 'red'}} />
+                </ListItemIcon>
+                <ListItemText sx={{color: 'red'}} primary="Deletar" />
+            </ListItemButton>
+        </List>
+    )
+}
 
 const Row = ({course}) => {
+    const [popoverOpen, setPopoverOpen] = useState(null);
+    const open = Boolean(popoverOpen);
+    const id = open ? 'simple-popover' : undefined;
+
+    const handleClick = (event) => {
+        setPopoverOpen(event.currentTarget);
+    };
+    const handleClose = () => {
+        setPopoverOpen(null);
+    };
+
     return (
         <TableRow key={course._id} hover>
             <TableCell sx={{
@@ -37,10 +79,11 @@ const Row = ({course}) => {
             </TableCell>
             <TableCell align='center'>
                 <IconButton
-                aria-label="editar"
-                color="inherit"
-                size="medium"
-                onClick={() => console.log('Edit')}
+                    aria-label="editar"
+                    color="inherit"
+                    size="medium"
+                    aria-describedby={id}
+                    onClick={handleClick}
                 >
                     <MoreVertIcon 
                         sx={{
@@ -49,6 +92,18 @@ const Row = ({course}) => {
                         fontSize="inherit" 
                     />
                 </IconButton>
+                <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={popoverOpen}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                >
+                    <ListOptions course={course} />
+                </Popover>
             </TableCell>
         </TableRow>
     )
