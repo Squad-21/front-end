@@ -17,7 +17,7 @@ export function Navbar() {
   if (pathname === Links.home) {
     return (
       <div className="bg-violet-550 h-16">
-        <HomeNav subscribe={subscribe} />;
+        <HomeNav subscribe={subscribe} />
       </div>
     );
   }
