@@ -3,5 +3,8 @@ export const Links = {
     login: '/login',
     register: '/registrar',
     courses: '/cursos',
-    admin: '/admin'
+    admin: {
+        root: '/admin',
+        courses: 'cursos'
+    }
 }

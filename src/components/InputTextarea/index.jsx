@@ -1,15 +1,13 @@
-import styled, { css } from 'styled-components'
+import styled,{ css } from "styled-components";
 
-const InputText = ({
-    name, 
-    type,
+const InputTextarea = ({
+    name,
     placeholder,
     registerForm,
     error
 }) => {
     return ( 
-        <Input
-            type={type? type : 'text'}
+        <Textarea
             placeholder={placeholder}
             className={`bg-gray-10`}
             { ...registerForm}
@@ -18,12 +16,13 @@ const InputText = ({
      );
 }
  
-export default InputText;
+export default InputTextarea;
 
-const Input = styled.input((props) => css`
+const Textarea = styled.textarea((props) => css`
     border-radius: 0.25rem;
     border: 0.3px solid ${props.error? 'red' : '#ADADAD'};
     width: 100%;
+    min-height: 7rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
     padding: 0.75rem;

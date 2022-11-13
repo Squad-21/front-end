@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import Logo from "../../components/Logo";
-import FormItem from "./FormItem";
+import FormItem from "../../components/FormItem";
 import { Links } from "../../constants/links";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

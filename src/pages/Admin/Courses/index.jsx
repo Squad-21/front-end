@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components'
-import { getCoursesAction } from '../../service/api';
-import Table from './Table';
+import { getCoursesAction } from '../../../service/api';
+import Table from '../Table';
 import { 
     Typography, 
     Fab,
     Alert,
     AlertTitle
- } from '@mui/material';
- import AddIcon from '@mui/icons-material/Add';
-import { Style } from '../../constants/style';
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Style } from '../../../constants/style';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
+import { Links } from '../../../constants/links'
 
 let theme = createTheme({
     palette: {
@@ -20,25 +22,32 @@ let theme = createTheme({
     },
 });
 
-const AdminPage = () => {
+const AdminCoursesPage = () => {
     const [allCourses, setAllCourses] =  useState(null);
     const [searchText, setSearchText] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const navigate = useNavigate()
+
     let searchedCourses = searchText && searchText != ''?
         allCourses.filter(course => course.title.toLowerCase().indexOf(searchText.toLowerCase()) != -1) 
         : allCourses
 
-    useEffect(() => {
-        const fetchData = async() => {
-            const data = await getCoursesAction();
+    const fetchData = async() => {
+        setIsLoading(true);
 
-            if(data.error) {
-                setErrorMessage(data.error)
-                return 
-            }
-            setAllCourses(data.courses);
-            setErrorMessage(null)
+        const data = await getCoursesAction();
+
+        if(data.error) {
+            setErrorMessage(data.error)
+            return 
         }
+        setAllCourses(data.courses);
+        setErrorMessage(null);
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
         fetchData().catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
 
@@ -68,7 +77,10 @@ const AdminPage = () => {
             >
                 Todos os cursos
             </Typography>
-            <Table courses={searchedCourses} />
+            <Table 
+                courses={searchedCourses}
+                getCourses={fetchData}
+            />
             <ThemeProvider theme={theme}>
                 <Fab 
                     color='primary'
@@ -79,6 +91,7 @@ const AdminPage = () => {
                         right: 16,
 
                     }}
+                    onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/add`)}
                 >
                     <AddIcon />
                 </Fab>
@@ -87,7 +100,7 @@ const AdminPage = () => {
      );
 }
  
-export default AdminPage;
+export default AdminCoursesPage;
 
 const Container = styled.div`
     padding: 1rem;

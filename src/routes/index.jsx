@@ -5,7 +5,8 @@ import { ErrorPage } from "../pages/Error";
 import RegisterPage from "../pages/Register";
 import { Links } from "../constants/links";
 import CoursesPage from "../pages/Courses";
-import AdminPage from "../pages/Admin";
+import AdminCoursesPage from "../pages/Admin/Courses";
+import AddCoursePage from "../pages/Admin/Courses/Add";
 
 export const router = createBrowserRouter([
   {
@@ -25,8 +26,22 @@ export const router = createBrowserRouter([
     element: <CoursesPage />,
   },
   {
-    path: Links.admin,
-    element: <AdminPage />,
+    path: Links.admin.root,
+    children: [
+      {
+        path: Links.admin.courses,
+        children: [
+          {
+            path: '',
+            element: <AdminCoursesPage />,
+          },
+          {
+            path: 'add',
+            element: <AddCoursePage />,
+          }
+        ]
+      }
+    ]
   },
   {
     path: "*",

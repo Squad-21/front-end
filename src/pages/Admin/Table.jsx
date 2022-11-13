@@ -19,8 +19,22 @@ import { formatDate } from '../../service/utils';
 import { Style } from '../../constants/style';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import useAuthStore from "../../context/authStore";
+import { deleteCourseAction } from '../../service/api';
 
-const ListOptions = ({course}) => {
+const ListOptions = ({course, getCourses}) => {
+    const { token } = useAuthStore((state) => ({ token: state.token }));
+
+    const handleDelete = async() => {
+        const data = await deleteCourseAction(course._id, token);
+
+        if(data.error) {
+            alert(data.error)
+            return 
+        }
+        console.log(data.message)
+        await getCourses()
+    }
     return (
         <List component="nav">
             <ListItemButton
@@ -32,7 +46,7 @@ const ListOptions = ({course}) => {
                 <ListItemText primary="Editar" />
             </ListItemButton>
             <ListItemButton
-                onClick={() => console.log(course)}
+                onClick={() => handleDelete()}
             >
                 <ListItemIcon>
                     <DeleteIcon sx={{fill: 'red'}} />
@@ -43,7 +57,7 @@ const ListOptions = ({course}) => {
     )
 }
 
-const Row = ({course}) => {
+const Row = ({course, getCourses}) => {
     const [popoverOpen, setPopoverOpen] = useState(null);
     const open = Boolean(popoverOpen);
     const id = open ? 'simple-popover' : undefined;
@@ -102,14 +116,18 @@ const Row = ({course}) => {
                         horizontal: 'left',
                     }}
                 >
-                    <ListOptions course={course} />
+                    <ListOptions 
+                        course={course}
+                        getCourses={getCourses}
+                    />
                 </Popover>
             </TableCell>
         </TableRow>
     )
 }
 
-const Table = ({courses}) => {
+const Table = ({courses, getCourses}) => {
+    //TODO: Mostrar mensagem de erro e de sucesso ao deletar
     const columns = [
         {
             id: 'name',
@@ -157,7 +175,13 @@ const Table = ({courses}) => {
                 </TableHead>
                 <TableBody>
                 {
-                    courses?.map(course =>  <Row course={course} key={course._id} />)
+                    courses?.map(course =>  
+                        <Row 
+                            course={course} 
+                            key={course._id}
+                            getCourses={getCourses}
+                        />
+                    )
                 }
                 </TableBody>
             </TableElement>
