@@ -12,7 +12,7 @@ export const registerAction = async(data) => {
         res.user = response.data.user
       }).catch(e => {
         console.log(e);
-        res.error = e.response?.data.message ? e.response.data.message : e.toString()
+        res.error = e.response?.data.message ? e.response.data.message : e.message
       });
 
       return res
@@ -29,7 +29,7 @@ export const loginAction = async(data) => {
         res.user = response.data.user
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.toString()
+        res.error = e.response?.data.message ? e.response.data.message : e.message
     });
 
     return res
@@ -45,7 +45,48 @@ export const getCoursesAction = async() => {
         res.courses = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.toString()
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res
+}
+
+export const deleteCourseAction = async(courseID, token) => {
+    let res = {
+        message: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.delete(`${API.base_link}/courses/${courseID}`, { headers }).then(response => {
+        res.message = response.data.message
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res
+}
+
+export const addCourseAction = async(data, token) => {
+    let res = {
+        course: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data;'
+    }
+
+    console.log(data);
+
+    await axios.post(`${API.base_link}/courses`, data, { headers }).then(response => {
+        res.course = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
     });
 
     return res
