@@ -32,3 +32,8 @@ export const courseSchema = yup.object({
             return true;
         })
 }).required();
+
+export const moduleSchema = yup.object({
+    title: yup.string().required("Digite um título"),
+    description: yup.string().required("Digite uma descrição")
+}).required();

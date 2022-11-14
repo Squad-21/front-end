@@ -2,40 +2,45 @@ import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { courseSchema } from '../../../constants/yupSchemas';
+import { moduleSchema } from '../../../constants/yupSchemas';
 import Button from '../../../components/Button'
 import FormItem from '../../../components/FormItem';
 import useAuthStore from '../../../context/authStore';
-import { editCourseAction, getOneCourseAction } from '../../../service/api';
+import { editCourseAction, editModuleAction, getOneCourseAction } from '../../../service/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
 
-const EditCoursePage = () => {
+const EditModulePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate();
-    const { courseID } = useParams();
+    const { courseID, moduleCode } = useParams();
     const {
         register,
         setValue,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(courseSchema),
+        resolver: yupResolver(moduleSchema),
     });
     const onSubmit = async(data, e) => {
         setIsLoading(true);
-        const editCourseData = await editCourseAction(data, token, courseID);
+        const editModuleData = await editModuleAction(
+            data, 
+            token, 
+            courseID, 
+            moduleCode
+        );
         setIsLoading(false)
 
-        if(editCourseData.error) {
-            setErrorMessage(editCourseData.error);
+        if(editModuleData.error) {
+            setErrorMessage(editModuleData.error);
             return 
         }
         setErrorMessage(null);
-        navigate(`${Links.admin.root}/${Links.admin.courses}`);
+        navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos`);
     }
 
     const fetchData = async() => {
@@ -46,7 +51,7 @@ const EditCoursePage = () => {
             setErrorMessage(data.error)
             return 
         }
-        return data.courseData.course
+        return data.courseData.course.modules.find(module => module.code == moduleCode)
     }
 
     useEffect(() => {
@@ -81,20 +86,13 @@ const EditCoursePage = () => {
                     errorMessage={errors.description?.message}
                     registerForm={register("description")}
                 />
-                <FormItem
-                    title="Imagem"
-                    name="image"
-                    type="file"
-                    errorMessage={errors.image?.message}
-                    registerForm={register("image")}
-                />
                 <ButtonContainer>
                     <Button 
                         title="Cancelar"
                         type="cancel"
                         onClick={(e) => {
                             e.preventDefault();
-                            navigate(`${Links.admin.root}/${Links.admin.courses}`);
+                            navigate(-1);
                         }}
                     />
                     <Button
@@ -107,7 +105,7 @@ const EditCoursePage = () => {
     );
 }
  
-export default EditCoursePage;
+export default EditModulePage;
 
 const Container = styled.div`
     padding: 1rem;
