@@ -54,12 +54,12 @@ export const getCoursesAction = async() => {
 
 export const getOneCourseAction = async(courseID) => {
     let res = {
-        course: null,
+        courseData: null,
         error: null
     }
 
     await axios.get(`${API.base_link}/courses/${courseID}`).then(response => {
-        res.course = response.data.course
+        res.courseData = response.data
     }).catch(e => {
         console.log(e)
         res.error = e.response?.data.message ? e.response.data.message : e.message
@@ -133,4 +133,124 @@ export const editCourseAction = async(data, token, courseID) => {
     });
 
     return res
+}
+
+export const addModuleAction = async(data, token, courseID) => {
+    let res = {
+        module: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.post(`${API.base_link}/courses/${courseID}/modules`, data, { headers }).then(response => {
+        res.module = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res
+}
+
+export const editModuleAction = async(
+    data, 
+    token, 
+    courseID, 
+    moduleCode
+    ) => {
+
+    let res = {
+        module: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.put(`${API.base_link}/courses/${courseID}/modules/${moduleCode}`, data, { headers }).then(response => {
+        res.module = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res
+}
+
+export const deleteModuleAction = async(token, courseID, moduleCode) => {
+    let res = {
+        message: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.delete(`${API.base_link}/courses/${courseID}/modules/${moduleCode}`, { headers }).then(response => {
+        res.message = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res
+}
+
+export const addLessonAction = async(data, token) => {
+    let res = {
+        lesson: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.post(`${API.base_link}/lessons`, data, { headers }).then(response => {
+        res.lesson = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res
+}
+
+export const editLessonAction = async(data, token, lessonID) => {
+    let res = {
+        lesson: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.put(`${API.base_link}/lessons/${lessonID}`, data, { headers }).then(response => {
+        res.lesson = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res 
+}
+
+export const deleteLessonAction = async(token, lessonID) => {
+    let res = {
+        message: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.delete(`${API.base_link}/lessons/${lessonID}`, { headers }).then(response => {
+        res.message = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res 
 }

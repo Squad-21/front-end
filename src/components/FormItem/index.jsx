@@ -2,11 +2,13 @@ import styled from 'styled-components'
 import InputText from '../InputText';
 import InputTextarea from '../InputTextarea';
 import InputFile from '../InputFile';
+import InputSelect from '../InputSelect';
 
 const FormItem = ({
     title, 
     name, 
     type,
+    selectOptions,
     placeholder, 
     errorMessage,
     registerForm
@@ -34,6 +36,14 @@ const FormItem = ({
             }
             {type == 'file' && 
                 <InputFile 
+                    registerForm={registerForm}
+                    error={errorMessage}
+                />
+            }
+            {type == 'select' &&
+                <InputSelect
+                    placeholder={placeholder}
+                    options={selectOptions}
                     registerForm={registerForm}
                     error={errorMessage}
                 />
