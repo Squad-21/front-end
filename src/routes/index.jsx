@@ -7,6 +7,7 @@ import { Links } from "../constants/links";
 import CoursesPage from "../pages/Courses";
 import AdminCoursesPage from "../pages/Admin/Courses";
 import AddCoursePage from "../pages/Admin/Courses/Add";
+import EditCoursePage from "../pages/Admin/Courses/Edit";
 import { Devpage } from "../pages/Courses/Dev";
 
 export const router = createBrowserRouter([
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
           {
             path: "add",
             element: <AddCoursePage />,
+          },
+          {
+            path: ":courseID/edit",
+            element: <EditCoursePage />,
           },
         ],
       },
