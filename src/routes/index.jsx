@@ -40,16 +40,16 @@ export const router = createBrowserRouter([
       },
       {
         path: ":courseID",
-        element: <CoursePage />,
-      },
-    ],
-  },
-  {
-    path: Links.lesson,
-    children: [
-      {
-        path: ":lessonID",
-        element: <LessonPage />,
+        children: [
+          {
+            path: "",
+            element: <CoursePage />,
+          },
+          {
+            path: `${Links.courses.lesson}/:lessonID`,
+            element: <LessonPage />,
+          }
+        ]
       },
     ],
   },

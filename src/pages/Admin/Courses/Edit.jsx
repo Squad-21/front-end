@@ -91,7 +91,7 @@ const EditCoursePage = () => {
                 <ButtonContainer>
                     <Button 
                         title="Cancelar"
-                        type="cancel"
+                        variant="gray"
                         onClick={(e) => {
                             e.preventDefault();
                             navigate(`${Links.admin.root}/${Links.admin.courses}`);

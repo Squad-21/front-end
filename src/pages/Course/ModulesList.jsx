@@ -27,7 +27,7 @@ const ListElement = ({lessons}) => {
                     key={lesson._id} 
                     disablePadding
                     divider={index + 1 != lessons.length}
-                    onClick={() => navigate(`${Links.lesson}/${lesson._id}`)}
+                    onClick={() => navigate(`${Links.courses.root}/${lesson.course}/${Links.courses.lesson}/${lesson._id}`)}
                 >
                     <ListItemButton>
                         <ListItemIcon>

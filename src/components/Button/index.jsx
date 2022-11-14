@@ -5,14 +5,14 @@ const Button = ({
   title, 
   onClick, 
   disabled,
-  type
+  variant
 }) => {
   return (
     <ButtonElement 
-      className={type=='cancel'? "" : "bg-orange-650"} 
+      className={(variant=='orange' || !variant) && "bg-orange-650"} 
       onClick={onClick}
       disabled={disabled}
-      type={type}
+      variant={variant}
     >
       {title}
     </ButtonElement>
@@ -22,7 +22,16 @@ const Button = ({
 export default Button;
 
 const ButtonElement = styled.button((props) => css`
-  color: ${props.type == 'cancel' ? Style.colors["gray-550"] : 'white'};
+  ${(!props.variant || props.variant == 'orange') && `
+    color: white;
+  `}
+  ${props.variant == 'gray' && `
+    color: ${Style.colors["gray-550"]};
+  `}
+  ${props.variant == 'violet' && `
+    color: white;
+    background-color: ${Style.colors["violet-550"]};
+  `}
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 700;
@@ -31,11 +40,31 @@ const ButtonElement = styled.button((props) => css`
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   opacity: ${props.disabled? 0.4 : 1};
-  border: 1px solid ${props.type == 'cancel' ? Style.colors["gray-550"] : Style.colors['orange-650']};
+  border-width: 1px;
+  border-style: solid;
+  ${(!props.variant || props.variant == 'orange') && `
+    border-color: ${Style.colors['orange-650']};
+  `}
+  ${props.variant == 'gray' && `
+    border-color: ${Style.colors["gray-550"]};
+  `}
+  ${props.variant == 'violet' && `
+    border-color: ${Style.colors["violet-550"]};
+  `}
   transition: 0.3s;
 
   &:hover {
-    background-color: ${props.type == 'cancel' ? Style.colors["gray-550"] : 'white'};
-    color: ${props.type == 'cancel' ? 'white' : Style.colors['orange-650']};
+    ${(!props.variant || props.variant == 'orange') && `
+      background-color: white;
+      color: ${Style.colors['orange-650']};
+    `}
+    ${props.variant == 'gray' && `
+      background-color: ${Style.colors["gray-550"]};
+      color: white;
+    `}
+    ${props.variant == 'violet' && `
+      background-color: white;
+      color: ${Style.colors["violet-550"]};
+    `}
   }
 `)

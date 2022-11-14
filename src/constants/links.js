@@ -5,11 +5,11 @@ export const Links = {
     courses: {
       root: "/cursos",
       dev: "dev",
+      lesson: 'aulas'
     },
     admin: {
         root: '/admin',
         courses: 'cursos',
         modules: 'modulos'
-    },
-    lesson: '/aulas'
+    }
 }

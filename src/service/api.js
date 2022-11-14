@@ -254,3 +254,7 @@ export const deleteLessonAction = async(token, lessonID) => {
 
     return res 
 }
+
+export const getOneLessonAction = async(lessonID) => {
+    console.log('')
+}
