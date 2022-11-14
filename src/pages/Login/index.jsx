@@ -50,12 +50,12 @@ export function LoginPage() {
     setUser(loginData.user);
     setErrorMessage(null);
     toggleNotificationVisibility(true);
-    navigate(Links.courses);
+    navigate(Links.courses.root);
   }
 
   useEffect(() => {
     if(token) {
-      navigate(Links.courses);
+      navigate(Links.courses.root);
     }
   },[])
 
