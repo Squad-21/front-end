@@ -14,6 +14,7 @@ import EditModulePage from "../pages/Admin/Modules/Edit";
 import AdminLessonsPage from "../pages/Admin/Lessons";
 import AddLessonPage from "../pages/Admin/Lessons/Add";
 import EditLessonPage from "../pages/Admin/Lessons/Edit";
+import { Devpage } from "../pages/Courses/Dev";
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +30,17 @@ export const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
-    path: Links.courses,
-    element: <CoursesPage />,
+    path: Links.courses.root,
+    children: [
+      {
+        path: "",
+        element: <CoursesPage />,
+      },
+      {
+        path: "dev",
+        element: <Devpage />,
+      },
+    ],
   },
   {
     path: Links.admin.root,
@@ -39,15 +49,15 @@ export const router = createBrowserRouter([
         path: Links.admin.courses,
         children: [
           {
-            path: '',
+            path: "",
             element: <AdminCoursesPage />,
           },
           {
-            path: 'add',
+            path: "add",
             element: <AddCoursePage />,
           },
           {
-            path: ':courseID/edit',
+            path: ":courseID/edit",
             element: <EditCoursePage />,
           },
           {
@@ -81,5 +91,5 @@ export const router = createBrowserRouter([
   {
     path: "*",
     element: <ErrorPage />,
-  }
+  },
 ]);

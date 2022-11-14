@@ -31,7 +31,7 @@ export function Navbar() {
   if (isDesktopOrLaptop) {
     return (
       <div className="bg-violet-550 h-16">
-        <AuthBar subscribe={subscribe} />;
+        <AuthBar subscribe={subscribe} />
       </div>
     );
   }

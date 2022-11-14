@@ -2,7 +2,10 @@ export const Links = {
     home: '/',
     login: '/login',
     register: '/registrar',
-    courses: '/cursos',
+    courses: {
+      root: "/cursos",
+      dev: "dev",
+    },
     admin: {
         root: '/admin',
         courses: 'cursos',
