@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components'
-import { getOneCourseAction } from '../../../service/api';
-import Table from '../Table';
+import { useState, useEffect } from "react";
+import styled, { css } from "styled-components";
 import { 
     Typography, 
     Alert,
     AlertTitle
 } from '@mui/material';
+import Table from "../Table";
+import FabButton from "../FabButton";
 import { useNavigate, useParams } from "react-router-dom";
-import { Links } from '../../../constants/links';
-import Row from './Row';
-import FabButton from '../FabButton';
+import { getOneCourseAction } from '../../../service/api';
+import Row from "./Row";
+import { Links } from "../../../constants/links";
 
 const columns = [
     {
-        id: 'name',
-        label: 'Nome',
+        id: 'lesson',
+        label: 'Aula',
         textAlign: 'left',
         minWidth: 170,
         maxWidth: 170
     },
     {
-        id: 'lessons',
-        label: 'Aulas',
+        id: 'likes',
+        label: 'Curtidas',
         textAlign: 'center',
         minWidth: 50,
         maxWidth: 100
@@ -37,17 +37,17 @@ const columns = [
     }
 ]
 
-const AdminModulesPage = () => {
+const AdminLessonsPage = () => {
     const [courseData, setCourseData] = useState(null)
     const [searchText, setSearchText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
-    const { courseID } = useParams();
+    const { courseID, moduleCode } = useParams();
 
-    let searchedModules = searchText && searchText != ''?
-        courseData?.course.modules.filter(course => course.title.toLowerCase().indexOf(searchText.toLowerCase()) != -1) 
-        : courseData?.course.modules
+    let searchedLessons = searchText && searchText != ''?
+        courseData?.lessons.filter(lesson => lesson.title.toLowerCase().indexOf(searchText.toLowerCase()) != -1 && lesson.module == moduleCode) 
+        : courseData?.lessons.filter(lesson => lesson.module == moduleCode)
 
     const fetchData = async() => {
         setIsLoading(true);
@@ -59,6 +59,7 @@ const AdminModulesPage = () => {
             return 
         }
         setCourseData(data.courseData);
+        console.log(data.courseData);
         setErrorMessage(null);
         setIsLoading(false);
     }
@@ -91,38 +92,33 @@ const AdminModulesPage = () => {
                     paddingTop: '2rem'
                 }}
             >
-                {courseData?.course.title}
+                Módulo 1 - Introdução {moduleCode}
             </Typography>
             <Table columns={columns}>
                 {
-                    searchedModules?.map((module, index) => {
-                        module.lessons = courseData.lessons.filter(lesson => lesson.module == module.code)
-                        return (
+                    searchedLessons?.map(lesson => 
                             <Row 
-                                module={module}
+                                lesson={lesson}
                                 courseID={courseID}
-                                index={index + 1}
-                                key={module._id}
+                                key={lesson._id}
                                 getData={fetchData}
                             />
-                        )
-                    })
+                    )
                 }
             </Table>
             <FabButton
-                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos/add`)}
+                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/aulas/add`)}
             />
         </Container>
-     );
+    );
 }
  
-export default AdminModulesPage;
+export default AdminLessonsPage;
 
 const Container = styled.div`
     padding: 1rem;
 `
 const SearchContainer = styled.div`
-
 `
 const Input = styled.input((props) => css`
     border-radius: 0.25rem;

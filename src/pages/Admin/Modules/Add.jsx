@@ -21,10 +21,10 @@ const AddModulePage = () => {
         register,
         handleSubmit,
         formState: { errors },
-      } = useForm({
+    } = useForm({
         resolver: yupResolver(moduleSchema),
-      });
-      const onSubmit = async(data, e) => {
+    });
+    const onSubmit = async(data, e) => {
         
         setIsLoading(true);
         const addModuleData = await addModuleAction(data, token, courseID);
@@ -36,7 +36,7 @@ const AddModulePage = () => {
         }
         setErrorMessage(null);
         navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos`);
-      }
+    }
 
     return ( 
         <Container>

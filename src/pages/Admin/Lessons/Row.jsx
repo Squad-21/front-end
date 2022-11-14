@@ -16,12 +16,12 @@ import { Style } from '../../../constants/style';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useAuthStore from "../../../context/authStore";
-import { deleteCourseAction, deleteModuleAction } from '../../../service/api';
+import { deleteLessonAction, deleteModuleAction } from '../../../service/api';
 import { useNavigate } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 
 const ListOptions = ({
-    module, 
+    lesson, 
     courseID,
     getData
 }) => {
@@ -29,7 +29,7 @@ const ListOptions = ({
     const navigate = useNavigate();
 
     const handleDelete = async() => {
-        const data = await deleteModuleAction(token, courseID, module.code);
+        const data = await deleteLessonAction(token, lesson._id);
 
         if(data.error) {
             alert(data.error)
@@ -40,7 +40,7 @@ const ListOptions = ({
     return (
         <List component="nav">
             <ListItemButton
-                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos/${module.code}/edit`)}
+                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/aulas/${lesson._id}/edit`)}
             >
                 <ListItemIcon>
                     <EditIcon />
@@ -60,13 +60,11 @@ const ListOptions = ({
 }
 
 const Row = ({
-    module, 
-    index, 
-    courseID, 
+    lesson, 
+    courseID,
     getData
 }) => {
     const [popoverOpen, setPopoverOpen] = useState(null);
-    const navigate = useNavigate();
     const open = Boolean(popoverOpen);
     const id = open ? 'simple-popover' : undefined;
 
@@ -78,19 +76,17 @@ const Row = ({
     };
 
     return (
-        <TableRow key={module._id} hover>
+        <TableRow hover>
             <TableCell 
                 sx={{
                     fontSize: '1rem',
-                    fontWeight: 'bold',
-                    cursor: 'pointer'
+                    fontWeight: 'bold'
                 }}
-                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos/${module.code}`)}
             >
-                Módulo {index} - {module.title}
+                {lesson.title}
             </TableCell>
             <TableCell align='center'>
-                {module.lessons.length}
+                {lesson.likes.length}
             </TableCell>
             <TableCell align='center'>
                 <IconButton
@@ -119,7 +115,7 @@ const Row = ({
                 >
                     <ListOptions 
                         courseID={courseID}
-                        module={module}
+                        lesson={lesson}
                         getData={getData}
                     />
                 </Popover>
