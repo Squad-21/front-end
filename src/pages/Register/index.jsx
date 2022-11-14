@@ -50,13 +50,13 @@ const RegisterPage = () => {
     setUser(registerData.user);
     setErrorMessage(null);
     toggleNotificationVisibility(true);
-    navigate(Links.courses);
+    navigate(Links.courses.root);
   }
   const onError = (errors, e) => console.log(errors, e)
 
   useEffect(() => {
     if(token) {
-      navigate(Links.courses);
+      navigate(Links.courses.root);
     }
   },[])
 
