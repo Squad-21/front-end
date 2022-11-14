@@ -10,5 +10,6 @@ export const Links = {
         root: '/admin',
         courses: 'cursos',
         modules: 'modulos'
-    }
+    },
+    lesson: '/aulas'
 }
