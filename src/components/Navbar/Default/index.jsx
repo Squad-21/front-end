@@ -12,19 +12,17 @@ import SearchBar from './SearchBar';
 import useAuthStore from "../../../context/authStore";
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import Logo from "../Logo";
 
 const DefaultBar = () => {
   const { user } = useAuthStore((state) => ({ user: state.user }))
   const isDesktopOrLaptop = useIsDesktop();
 
   return (
-    <Container className="flex items-center justify-between px-10">
+    <Container className="flex items-center justify-between px-10 navbar">
       <div id="logo-search" className="flex items-center gap-3">
-        <div className="w-[150px] h-[40px] bg-white flex gap-1 items-center ">
-          <img src={LogoImg} alt="logo" className="w-10" />
-          <span>Logo</span>
-        </div>
-        <SearchBar />
+        <Logo />
+        {user && <SearchBar />}
       </div>
 
       <div id="nav-menu" className="flex items-center">
@@ -68,8 +66,6 @@ export default DefaultBar;
 
 const Container = styled.div`
     background-color: ${Style.colors["violet-550"]};
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
 
     & a {
       transition: .3s;

@@ -1,8 +1,8 @@
 import { Sidebar } from "./Sidebar";
 import LogoImg from "../../images/laranja_logo.png";
-import { AuthBar } from "./Auth";
 import { useMediaQuery } from "@mui/material";
 import DefaultBar from "./Default";
+import Logo from "./Logo";
 
 export function Navbar() {
   const pathname = window.location.pathname;
@@ -14,10 +14,10 @@ export function Navbar() {
     );
   }
   return (
-    <div className="bg-violet-550 h-16">
+    <div className="bg-violet-550 h-16 navbar">
       <div>
         <Sidebar />
-        <img className="w-10 ml-6 pt-2" src={LogoImg} alt="logo" />
+        <Logo />
       </div>
     </div>
   );

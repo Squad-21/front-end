@@ -13,11 +13,12 @@ import Row from './Row';
 import FabButton from '../FabButton';
 import Breadcrumbs from '../../../components/Breadcrumbs';
 import { isBrowser } from 'react-device-detect';
+import LoadingPage from '../../Loading';
 
 const AdminCoursesPage = () => {
     const [allCourses, setAllCourses] =  useState(null);
     const [searchText, setSearchText] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
     const breadcrumbs = [
@@ -58,22 +59,30 @@ const AdminCoursesPage = () => {
     ]
 
     const fetchData = async() => {
-        setIsLoading(true);
 
         const data = await getCoursesAction();
 
         if(data.error) {
+            setIsLoading(false);
             setErrorMessage(data.error)
             return 
         }
-        setAllCourses(data.courses);
-        setErrorMessage(null);
-        setIsLoading(false);
+        return data.courses
     }
 
     useEffect(() => {
-        fetchData().catch(e => setErrorMessage('Erro ao obter dados'))
+        fetchData()
+        .then(res => {
+            setAllCourses(res);
+            setErrorMessage(null);
+            setIsLoading(false);
+        })
+        .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
+
+    if(isLoading) {
+        return <LoadingPage />
+    }
 
     return ( 
         <Container>

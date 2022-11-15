@@ -7,15 +7,16 @@ import FormItem from "../../../components/FormItem";
 import { Alert, AlertTitle } from '@mui/material';
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../components/Button";
-import { addLessonAction, editLessonAction, getOneCourseAction } from "../../../service/api";
+import { editLessonAction, getOneCourseAction } from "../../../service/api";
 import { API } from "../../../constants/api";
 import { Links } from "../../../constants/links";
 import useAuthStore from "../../../context/authStore";
+import LoadingPage from '../../Loading';
 
 const EditLessonPage = () => {
     const [courseData, setCourseData] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate();
     const { courseID, lessonID } = useParams();
@@ -47,6 +48,7 @@ const EditLessonPage = () => {
         const data = await getOneCourseAction(courseID);
 
         if(data.error) {
+            setIsLoading(false)
             setErrorMessage(data.error)
             return 
         }
@@ -69,6 +71,7 @@ const EditLessonPage = () => {
         fetchData()
         .then(res => {
             setCourseData(res);
+            setIsLoading(false);
         })
         .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
@@ -78,6 +81,10 @@ const EditLessonPage = () => {
 
         setValues()
     },[courseData])
+
+    if(isLoading) {
+        return <LoadingPage />
+    }
 
     return ( 
         <Container>

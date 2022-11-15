@@ -13,10 +13,11 @@ import { formatDate } from '../../service/utils';
 import { isBrowser } from 'react-device-detect';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import VideoContent from './VideoContent';
+import LoadingPage from '../Loading';
 
 const LessonPage = () => {
     const [courseData, setCourseData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
     const { courseID, lessonID } = useParams();
     const { 
@@ -44,9 +45,7 @@ const LessonPage = () => {
     ];
 
     const handleMarkAsDone = async() => {
-        setIsLoading(true)
         const data = await markAsDoneAction(lessonID, token);
-        setIsLoading(false)
 
         if(data.error) {
             setErrorMessage(data.error)
@@ -71,6 +70,7 @@ const LessonPage = () => {
         fetchData()
         .then(res => {
             setCourseData(res);
+            setIsLoading(false)
         })
         .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
@@ -85,6 +85,10 @@ const LessonPage = () => {
                 />
             </MarkAsDoneContainer>
         )
+    }
+
+    if(isLoading) {
+        return <LoadingPage />
     }
 
     return ( 

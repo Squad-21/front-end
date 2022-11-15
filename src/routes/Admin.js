@@ -20,7 +20,7 @@ import LessonPage from "../pages/Lesson";
 export const RouterAdmin = createBrowserRouter([
   {
     path: Links.home,
-    element: <HomePage />,
+    element: <CoursesPage />,
   },
   {
     path: Links.login,

@@ -10,9 +10,12 @@ function App() {
   return (
     <>
       <Navbar />
-      {user?.admin && <RouterProvider router={RouterAdmin} />}
-      {!user && <RouterProvider router={RouterNotAuth} />}
-      {user && !user.admin &&  <RouterProvider router={RouterAuth} />}
+      {user?.admin && 
+      <RouterProvider router={RouterAdmin} />}
+      {!user && 
+      <RouterProvider router={RouterNotAuth} />}
+      {user && !user.admin &&  
+      <RouterProvider router={RouterAuth} />}
     </>
   );
 }
