@@ -90,3 +90,14 @@ export const userSchema = yup
     avatar: yup.mixed(),
   })
   .required();
+
+export const profileSchema = yup
+  .object({
+    name: yup.string().required("Digite um nome"),
+    email: yup
+      .string()
+      .email("Digite um email válido")
+      .required("Digite um email"),
+    password: yup.string().required("Digite uma senha"),
+  })
+  .required();
