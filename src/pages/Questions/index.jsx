@@ -25,7 +25,7 @@ export function QuestionsPage() {
 
   return (
     <div id="container" className="flex justify-center h-screen">
-      <div className="w-full px-5 mt-44">
+      <div className="w-full px-5 mt-44 max-w-xl">
         <h1 className="text-xl font-bold text-center mb-16">
           Central de dúvidas
         </h1>
