@@ -78,3 +78,15 @@ export const questionsSchema = yup
     question: yup.string().required("Digite sua dúvida"),
   })
   .required();
+
+export const userSchema = yup
+  .object({
+    name: yup.string().required("Digite um nome"),
+    email: yup.string().test("required", "Forneça um email válido", (email) => {
+      if (email.indexOf("@") == -1) return false;
+      return true;
+    }),
+    admin: yup.boolean().required("Forneça um nível"),
+    avatar: yup.mixed(),
+  })
+  .required();

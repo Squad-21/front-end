@@ -12,8 +12,8 @@ import { Links } from '../../../constants/links';
 import Row from './Row';
 import FabButton from '../FabButton';
 import Breadcrumbs from '../../../components/Breadcrumbs';
-import { isBrowser } from 'react-device-detect';
 import LoadingPage from '../../Loading';
+import SearchBar from '../SearchBar';
 
 const AdminCoursesPage = () => {
     const [allCourses, setAllCourses] =  useState(null);
@@ -67,14 +67,14 @@ const AdminCoursesPage = () => {
             setErrorMessage(data.error)
             return 
         }
+        setAllCourses(data.courses);
+        setErrorMessage(null);
         return data.courses
     }
 
     useEffect(() => {
         fetchData()
         .then(res => {
-            setAllCourses(res);
-            setErrorMessage(null);
             setIsLoading(false);
         })
         .catch(e => setErrorMessage('Erro ao obter dados'))
@@ -93,14 +93,10 @@ const AdminCoursesPage = () => {
                 </Alert>
             }
             <Breadcrumbs breadcrumbs={breadcrumbs} />
-            <SearchContainer>
-                <Input
-                    name="search"
-                    className={`bg-gray-10`}                    placeholder="Pesquise um curso..."
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                />
-            </SearchContainer>
+            <SearchBar
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+            />
             <Typography 
                 variant="h5" 
                 component="div"
@@ -134,15 +130,3 @@ export default AdminCoursesPage;
 const Container = styled.div`
     padding: 1rem;
 `
-const SearchContainer = styled.div`
-
-`
-const Input = styled.input((props) => css`
-    border-radius: 0.25rem;
-    border: 0.3px solid #ADADAD;
-    width: ${isBrowser? '50%' : '100%'};
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    padding: 0.75rem;
-
-`)

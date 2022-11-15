@@ -17,7 +17,7 @@ import { formatDate } from '../../service/utils';
 
 const Comment = ({data, getData}) => {
     const [isLoading, setIsLoading] = useState(false);
-    const { token } = useAuthStore((state) => ({ token: state.token }));
+    const { user, token } = useAuthStore((state) => ({ token: state.token, user: state.user }));
 
     const handleDelete = async() => {
         setIsLoading(true)
@@ -45,13 +45,13 @@ const Comment = ({data, getData}) => {
                     >
                         <ReplyIcon />
                     </IconButton>
-                    <IconButton 
+                    {user.admin && <IconButton 
                         size="small"
                         onClick={handleDelete}
                         disabled={isLoading}
                     >
                         <DeleteIcon />
-                    </IconButton>
+                    </IconButton>}
                 </Buttons>
             </InformationContainer>
         </CommentContainer>
@@ -65,6 +65,7 @@ const Comments = ({courseID, lessonID}) => {
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const {
         register,
+        setValue,
         handleSubmit,
         formState: { errors },
     } = useForm({
@@ -74,7 +75,6 @@ const Comments = ({courseID, lessonID}) => {
     const onSubmit = async(data, e) => {
         setIsLoading(true);
         const dataComment = await addCommentAction(data, lessonID, token);
-        setIsLoading(false);
 
         if(dataComment.error) {
             setErrorMessage(dataComment.error)
@@ -82,6 +82,9 @@ const Comments = ({courseID, lessonID}) => {
         }
 
         fetchData()
+        .then(res => {
+            setValue('content', '', { shouldValidate: false });
+        })
         .catch(e => setErrorMessage('Erro ao obter dados'))
     }
 

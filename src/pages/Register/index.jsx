@@ -123,7 +123,6 @@ const Container = styled.div`
 const Title = styled.h2`
   font-size: 1.25rem;
   line-height: 1.75rem;
-  margin-top: 2rem;
   font-weight: 700;
 `;
 const Form = styled.form`
@@ -135,6 +134,7 @@ const Legend = styled.p`
   font-size: 0.75rem;
   line-height: 1rem;
   margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
 `;
 const LinkElement = styled.a`
   text-decoration-line: underline;

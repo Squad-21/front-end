@@ -376,3 +376,22 @@ export const markAsDoneAction = async(lessonID, token) => {
 
     return res     
 }
+
+export const getAllUsersAction = async(token) => {
+    let res = {
+        users: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.get(`${API.base_link}/auth/users`, { headers }).then(response => {
+        res.users = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
+    });
+
+    return res     
+}

@@ -6,9 +6,18 @@ import bgImg from "../../images/orange2.png";
 import { useNavigate } from "react-router-dom";
 import { Links } from '../../constants/links';
 import { FaInstagram, FaLinkedinIn, FaDiscord } from "react-icons/fa";
+import useAuthStore from "../../context/authStore";
+import { useEffect } from "react";
 
 export const HomePage = () => {
+  const { user } = useAuthStore((state) => ({ user: state.user }))
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(user) {
+      navigate(Links.path.courses);
+    }
+  },[])
 
   return (
     <div id="container" className="px-6 max-w-[840px] mx-auto">
