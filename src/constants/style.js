@@ -5,6 +5,7 @@ export const Style = {
         "orange-650": "#FE2F01",
         "violet-550": "#5458BE",
         "light-orange": "#FDEBE5",
-        "light-gray": "#ADADAD"
+        "light-gray": "#ADADAD",
+        "blue": "#434E99"
       }
 }

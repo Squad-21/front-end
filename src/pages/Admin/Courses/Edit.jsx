@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
 import LoadingPage from '../../Loading';
+import AdminContent from '../AdminContent';
 
 const EditCoursePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -60,55 +61,57 @@ const EditCoursePage = () => {
         .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
 
-    if(isLoading) {
+    if(true) {
         return <LoadingPage />
     }
 
     return ( 
         <Container>
-            <Title>Editar Curso</Title>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-                {errorMessage && 
-                    <Alert severity="error">
-                        <AlertTitle>Erro</AlertTitle>
-                        {errorMessage}
-                    </Alert>
-                }
-                <FormItem
-                    title="Título"
-                    name="title"
-                    errorMessage={errors.title?.message}
-                    registerForm={register("title")}
-                />
-                <FormItem
-                    title="Descrição"
-                    name="description"
-                    type="textarea"
-                    errorMessage={errors.description?.message}
-                    registerForm={register("description")}
-                />
-                <FormItem
-                    title="Imagem"
-                    name="image"
-                    type="file"
-                    errorMessage={errors.image?.message}
-                    registerForm={register("image")}
-                />
-                <ButtonContainer>
-                    <Button 
-                        title="Cancelar"
-                        variant="gray"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            navigate(`${Links.admin.root}/${Links.admin.courses}`);
-                        }}
+            <AdminContent active='course'>
+                <Title>Editar Curso</Title>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    {errorMessage && 
+                        <Alert severity="error">
+                            <AlertTitle>Erro</AlertTitle>
+                            {errorMessage}
+                        </Alert>
+                    }
+                    <FormItem
+                        title="Título"
+                        name="title"
+                        errorMessage={errors.title?.message}
+                        registerForm={register("title")}
                     />
-                    <Button
-                        title="Salvar"
-                        disabled={isLoading}
+                    <FormItem
+                        title="Descrição"
+                        name="description"
+                        type="textarea"
+                        errorMessage={errors.description?.message}
+                        registerForm={register("description")}
                     />
-                </ButtonContainer>
-            </Form>
+                    <FormItem
+                        title="Imagem"
+                        name="image"
+                        type="file"
+                        errorMessage={errors.image?.message}
+                        registerForm={register("image")}
+                    />
+                    <ButtonContainer>
+                        <Button 
+                            title="Cancelar"
+                            variant="gray"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                navigate(`${Links.admin.root}/${Links.admin.courses}`);
+                            }}
+                        />
+                        <Button
+                            title="Salvar"
+                            disabled={isLoading}
+                        />
+                    </ButtonContainer>
+                </Form>
+            </AdminContent>
         </Container>
     );
 }
@@ -116,7 +119,6 @@ const EditCoursePage = () => {
 export default EditCoursePage;
 
 const Container = styled.div`
-    padding: 1rem;
 `
 const Form = styled.form``
 const ButtonContainer = styled.div`

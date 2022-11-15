@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { lessonSchema, userSchema } from '../../../constants/yupSchemas';
+import { userSchema } from '../../../constants/yupSchemas';
 import FormItem from "../../../components/FormItem";
 import { Alert, AlertTitle } from '@mui/material';
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../components/Button";
-import { editLessonAction, getOneCourseAction } from "../../../service/api";
-import { API } from "../../../constants/api";
+import { editUserAction, getOneUserAction } from "../../../service/api";
 import { Links } from "../../../constants/links";
 import useAuthStore from "../../../context/authStore";
 import LoadingPage from '../../Loading';
+import AdminContent from '../AdminContent';
 
 const options = [
     {
@@ -41,22 +41,42 @@ const EditUserPage = () => {
         resolver: yupResolver(userSchema),
     });
     const onSubmit = async(data, e) => {
-       console.log(data)
+        setIsLoading(true);
+        const editUserData = await editUserAction(data, token, userID);
+        setIsLoading(false)
+
+        if(editUserData.error) {
+            setErrorMessage(editUserData.error);
+            return 
+        }
+        setErrorMessage(null);
+        navigate(Links.path.admin.users.root);
     }
 
     const fetchData = async() => {
+        const data = await getOneUserAction(userID, token);
 
+        if(data.error) {
+            setIsLoading(false)
+            setErrorMessage(data.error)
+            return
+        }
+
+        return data.user
     }
 
 
     const setValues = () => {
-  
+        setValue('name', userData.name, { shouldValidate: true });
+        setValue('email', userData.email, { shouldValidate: true });
+        setValue('admin', userData.admin, { shouldValidate: true });
     }
 
     useEffect(() => {
         fetchData()
         .then(res => {
             setIsLoading(false);
+            setUserData(res);
         })
         .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
@@ -72,7 +92,7 @@ const EditUserPage = () => {
     }
 
     return ( 
-        <Container>
+        <AdminContent active='users'>
             <Title>Editar Usuário</Title>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 {errorMessage && 
@@ -102,7 +122,13 @@ const EditUserPage = () => {
                     errorMessage={errors.admin?.message}
                     registerForm={register("admin")}
                 />
-                
+                <FormItem
+                    title="Avatar"
+                    name="avatar"
+                    type="file"
+                    errorMessage={errors.avatar?.message}
+                    registerForm={register("avatar")}
+                />                
                 <ButtonContainer>
                     <Button 
                         title="Cancelar"
@@ -118,7 +144,7 @@ const EditUserPage = () => {
                     />
                 </ButtonContainer>
             </Form>
-        </Container>
+        </AdminContent>
     );
 }
  

@@ -55,16 +55,15 @@ const ButtonElement = styled.button((props) => css`
 
   &:hover {
     ${(!props.variant || props.variant == 'orange') && `
-      background-color: white;
-      color: ${Style.colors['orange-650']};
+      color: ${Style.colors['light-gray']};
+      background-color: #CD1100;
     `}
     ${props.variant == 'gray' && `
-      background-color: ${Style.colors["gray-550"]};
-      color: white;
+      background-color: #DDDDDD;
     `}
     ${props.variant == 'violet' && `
-      background-color: white;
-      color: ${Style.colors["violet-550"]};
+      color: ${Style.colors["light-gray"]};
+      background-color: #434E99;
     `}
   }
 `)

@@ -23,7 +23,13 @@ export const Links = {
           module: '/admin/cursos/{courseID}/modulos/{moduleCode}'
         },
         users: {
-          root: '/admin/usuarios'
+          root: '/admin/usuarios',
+          edit: '/admin/usuarios/{userID}/edit'
+        },
+        courses: {
+          root: '/admin/cursos',
+          edit: '/admin/cursos/{courseID}/edit',
+          add: '/admin/cursos/add'
         }
       },
       login: '/login',

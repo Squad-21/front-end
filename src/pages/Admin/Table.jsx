@@ -11,7 +11,7 @@ import {
 const Table = ({columns, children}) => {
     //TODO: Mostrar mensagem de erro e de sucesso ao deletar
     return ( 
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer>
             <TableElement stickyHeader aria-label="sticky table">
                 <TableHead>
                     <TableRow>

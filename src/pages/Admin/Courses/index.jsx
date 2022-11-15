@@ -14,6 +14,7 @@ import FabButton from '../FabButton';
 import Breadcrumbs from '../../../components/Breadcrumbs';
 import LoadingPage from '../../Loading';
 import SearchBar from '../SearchBar';
+import AdminContent from '../AdminContent';
 
 const AdminCoursesPage = () => {
     const [allCourses, setAllCourses] =  useState(null);
@@ -23,10 +24,10 @@ const AdminCoursesPage = () => {
     const navigate = useNavigate();
     const breadcrumbs = [
         <Link key={1} to={Links.path.home}>
-            Home
+            Admin
         </Link>,
         <Link key={2} to={Links.path.admin.root}>
-            Admin
+            Cursos
         </Link>
     ]
 
@@ -86,41 +87,43 @@ const AdminCoursesPage = () => {
 
     return ( 
         <Container>
-            {errorMessage && 
-                <Alert severity="error" sx={{marginBottom: '1rem'}}>
-                    <AlertTitle>Erro</AlertTitle>
-                    {errorMessage}
-                </Alert>
-            }
-            <Breadcrumbs breadcrumbs={breadcrumbs} />
-            <SearchBar
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-            />
-            <Typography 
-                variant="h5" 
-                component="div"
-                fontWeight='bold'
-                sx={{
-                    paddingTop: '2rem'
-                }}
-            >
-                Todos os cursos
-            </Typography>
-            <Table columns={columns}>
-                {
-                    searchedCourses?.map(course =>  
-                        <Row 
-                            course={course} 
-                            key={course._id}
-                            getCourses={fetchData}
-                        />
-                    )
+            <AdminContent active='course'>
+                {errorMessage && 
+                    <Alert severity="error" sx={{marginBottom: '1rem'}}>
+                        <AlertTitle>Erro</AlertTitle>
+                        {errorMessage}
+                    </Alert>
                 }
-            </Table>
-            <FabButton
-                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/add`)}
-            />
+                <Breadcrumbs breadcrumbs={breadcrumbs} />
+                <SearchBar
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                />
+                <Typography 
+                    variant="h5" 
+                    component="div"
+                    fontWeight='bold'
+                    sx={{
+                        paddingTop: '2rem'
+                    }}
+                >
+                    Todos os cursos
+                </Typography>
+                <Table columns={columns}>
+                    {
+                        searchedCourses?.map(course =>  
+                            <Row 
+                                course={course} 
+                                key={course._id}
+                                getCourses={fetchData}
+                            />
+                        )
+                    }
+                </Table>
+                <FabButton
+                    onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/add`)}
+                />
+            </AdminContent>
         </Container>
      );
 }
@@ -128,5 +131,4 @@ const AdminCoursesPage = () => {
 export default AdminCoursesPage;
 
 const Container = styled.div`
-    padding: 1rem;
 `

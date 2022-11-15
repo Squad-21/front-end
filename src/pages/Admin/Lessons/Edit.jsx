@@ -12,6 +12,7 @@ import { API } from "../../../constants/api";
 import { Links } from "../../../constants/links";
 import useAuthStore from "../../../context/authStore";
 import LoadingPage from '../../Loading';
+import AdminContent from "../AdminContent";
 
 const EditLessonPage = () => {
     const [courseData, setCourseData] = useState(null);
@@ -87,7 +88,7 @@ const EditLessonPage = () => {
     }
 
     return ( 
-        <Container>
+        <AdminContent active='course'>
             <Title>Editar Aula</Title>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 {errorMessage && 
@@ -155,7 +156,7 @@ const EditLessonPage = () => {
                     />
                 </ButtonContainer>
             </Form>
-        </Container>
+        </AdminContent>
     );
 }
  
