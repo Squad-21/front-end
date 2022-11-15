@@ -56,3 +56,7 @@ export const lessonSchema = yup.object({
         return true;
     }),
 }).required();
+
+export const commentSchema = yup.object({
+    content: yup.string().required("Digite um comentário")
+}).required();

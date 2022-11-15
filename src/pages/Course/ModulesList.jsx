@@ -32,7 +32,7 @@ const ListElement = ({lessons}) => {
                     <ListItemButton>
                         <ListItemIcon>
                         {lesson.type == 'Artigo' && <ArticleIcon />}
-                        {lesson.type == 'Video' && <PlayCircleIcon />}
+                        {(lesson.type == 'Video' || lesson.type == 'Vídeo') && <PlayCircleIcon />}
                         {lesson.type == 'Podcast' && <VolumeUpIcon />}
                     </ListItemIcon>
                         <ListItemText primary={lesson.title} />

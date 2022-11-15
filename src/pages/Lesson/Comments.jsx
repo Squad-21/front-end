@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { useState, useEffect } from 'react';
+import styled, { css } from "styled-components";
 import Button from "../../components/Button";
 import { 
     Avatar,
@@ -7,23 +8,48 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReplyIcon from '@mui/icons-material/Reply';
 import { Style } from "../../constants/style";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { commentSchema } from "../../constants/yupSchemas";
+import { addCommentAction, deleteCommentAction, getCommentsAction } from '../../service/api';
+import useAuthStore from '../../context/authStore';
+import { formatDate } from '../../service/utils';
 
-const Comment = () => {
+const Comment = ({data, getData}) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const { token } = useAuthStore((state) => ({ token: state.token }));
+
+    const handleDelete = async() => {
+        setIsLoading(true)
+        const dataDelete = await deleteCommentAction(data._id, token)
+
+        if(dataDelete.error) {
+            alert(dataDelete.error)
+            return 
+        }
+        console.log(dataDelete.message)
+        await getData()
+        setIsLoading(false)
+    }
     return (
         <CommentContainer>
             <AvatarContainer>
-                <Avatar alt="Remy Sharp" src="https://mui.com/static/images/avatar/1.jpg" />
+                <Avatar alt={data.author.name} src={data.author.avatar.url} />
             </AvatarContainer>
             <InformationContainer>
-                <Name>Remy Sharp</Name> <Date>12/11/22</Date>
-                <Content>Adorei essa aula ;)</Content>
+                <Name>{data.author.name}</Name> <Date>{formatDate(data.createdAt)}</Date>
+                <Content>{data.content}</Content>
                 <Buttons>
                     <IconButton 
                         size="small"
                     >
                         <ReplyIcon />
                     </IconButton>
-                    <IconButton size="small">
+                    <IconButton 
+                        size="small"
+                        onClick={handleDelete}
+                        disabled={isLoading}
+                    >
                         <DeleteIcon />
                     </IconButton>
                 </Buttons>
@@ -32,23 +58,76 @@ const Comment = () => {
     )
 }
 
-const Comments = () => {
+const Comments = ({courseID, lessonID}) => {
+    const [allComments, setAllComments] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const { token } = useAuthStore((state) => ({ token: state.token }));
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(commentSchema),
+    });
+
+    const onSubmit = async(data, e) => {
+        setIsLoading(true);
+        const dataComment = await addCommentAction(data, lessonID, token);
+        setIsLoading(false);
+
+        if(dataComment.error) {
+            setErrorMessage(dataComment.error)
+            return
+        }
+
+        fetchData()
+        .catch(e => setErrorMessage('Erro ao obter dados'))
+    }
+
+    const fetchData = async() => {
+        setIsLoading(true);
+        const data = await getCommentsAction(lessonID, token);
+        setIsLoading(false);
+
+        if(data.error) {
+            setErrorMessage(data.error)
+            return 
+        }
+        setAllComments(data.comments);
+    }
+
+    useEffect(() => {
+        fetchData()
+        .catch(e => setErrorMessage('Erro ao obter dados'))
+    },[])
+
     return ( 
         <Container>
             <Title>Comentários</Title>
-            <Textarea
-                placeholder="Escreva seu comentário"
-            />
-            <ButtonContainer>
-                <Button
-                    variant="violet"
-                    title="Enviar"
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <Textarea
+                    placeholder="Escreva seu comentário"
+                    error={errors.content?.message}
+                    {...register('content')}
                 />
-            </ButtonContainer>
+                <Error>{errors.content?.message} {errorMessage}</Error>
+                <ButtonContainer>
+                    <Button
+                        variant="violet"
+                        title="Enviar"
+                        disabled={isLoading}
+                    />
+                </ButtonContainer>
+            </Form>
             <CommentsList>
-                <Comment />
-                <Comment />
-                <Comment />
+                {allComments?.map(comment => 
+                    <Comment 
+                        key={comment._id} 
+                        data={comment} 
+                        getData={fetchData}
+                    />
+                )}
             </CommentsList>
         </Container>
     );
@@ -59,11 +138,15 @@ export default Comments;
 const Container = styled.div``
 const Title = styled.h2`
     font-weight: bold;
+    margin-bottom: 1rem;
 `
-const Textarea = styled.textarea`
+const Textarea = styled.textarea((props) => css`
     width: 100%;
     padding: 1rem;
-`
+    border: ${props.error ? '1px solid red' : '1px solid #ADADAD'};
+    border-radius: 4px;
+    resize: none;
+`)
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
@@ -94,4 +177,8 @@ const Buttons = styled.div`
     & svg{
         opacity: .5;
     }
+`
+const Form = styled.form``
+const Error = styled.p`
+    color: red;;
 `

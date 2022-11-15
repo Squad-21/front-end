@@ -18,7 +18,7 @@ const Progress = ({value}) => {
         }}
       />
       <p className="absolute top-[2px] left-2 text-white text-xs font-semibold">
-        {value}
+        {value}%
       </p>
     </div>
   );

@@ -32,8 +32,8 @@ const ButtonElement = styled.button((props) => css`
     color: white;
     background-color: ${Style.colors["violet-550"]};
   `}
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+  font-size: 1rem;
+  line-height: 1rem;
   font-weight: 700;
   border-radius: 0.25rem;
   width: 100%;
