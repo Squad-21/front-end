@@ -19,6 +19,7 @@ import LessonPage from "../pages/Lesson";
 import { QuestionsPage } from "../pages/Questions";
 import AdminUsersPage from "../pages/Admin/Users";
 import EditUserPage from "../pages/Admin/Users/Edit";
+import { ProfilePage } from "../pages/Profile";
 
 export const RouterAdmin = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const RouterAdmin = createBrowserRouter([
   {
     path: Links.questions,
     element: <QuestionsPage />,
+  },
+  {
+    path: Links.profile,
+    element: <ProfilePage />,
   },
   {
     path: Links.courses.root,
