@@ -14,7 +14,8 @@ import EditModulePage from "../pages/Admin/Modules/Edit";
 import AdminLessonsPage from "../pages/Admin/Lessons";
 import AddLessonPage from "../pages/Admin/Lessons/Add";
 import EditLessonPage from "../pages/Admin/Lessons/Edit";
-import { Devpage } from "../pages/Courses/Dev";
+import CoursePage from "../pages/Course";
+import LessonPage from "../pages/Lesson";
 
 export const router = createBrowserRouter([
   {
@@ -37,8 +38,17 @@ export const router = createBrowserRouter([
         element: <CoursesPage />,
       },
       {
-        path: "dev",
-        element: <Devpage />,
+        path: ":courseID",
+        children: [
+          {
+            path: "",
+            element: <CoursePage />,
+          },
+          {
+            path: `${Links.courses.lesson}/:lessonID`,
+            element: <LessonPage />,
+          }
+        ]
       },
     ],
   },

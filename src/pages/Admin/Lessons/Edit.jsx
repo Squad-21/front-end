@@ -136,7 +136,7 @@ const EditLessonPage = () => {
                 <ButtonContainer>
                     <Button 
                         title="Cancelar"
-                        type="cancel"
+                        variant="gray"
                         onClick={(e) => {
                             e.preventDefault();
                             navigate(-1);

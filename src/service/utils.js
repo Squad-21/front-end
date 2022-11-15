@@ -15,3 +15,23 @@ export const fileToBase = async(file) => {
         reader.onerror = reject;
     })
 }
+
+export const calculateHoursOfLesson = (lessons) => {
+    let time = {
+        hours: 0,
+        min: 0,
+        sec: 0
+    }
+
+    if(!lessons || !lessons.length) return time
+    
+    const totalHours = lessons.map(lesson => Number(lesson.duration.split(':')[0])).reduce((acc, value) => acc + value, 0);
+    const totalMin = lessons.map(lesson => Number(lesson.duration.split(':')[1])).reduce((acc, value) => acc + value, 0);
+    const totalSec = lessons.map(lesson => Number(lesson.duration.split(':')[2])).reduce((acc, value) => acc + value, 0);
+
+    time.hours = totalHours + Math.floor(totalMin / 60);
+    time.min = (totalMin % 60) + Math.floor(totalSec / 60);
+    time.sec = totalSec % 60;
+
+    return time
+}

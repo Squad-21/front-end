@@ -254,3 +254,117 @@ export const deleteLessonAction = async(token, lessonID) => {
 
     return res 
 }
+
+export const addCommentAction = async(data, lessonID, token) => {
+    let res = {
+        comment: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.post(`${API.base_link}/lessons/${lessonID}/comment`, data, { headers }).then(response => {
+        res.comment = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res 
+}
+
+export const getCommentsAction = async(lessonID, token) => {
+    let res = {
+        comments: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.get(`${API.base_link}/lessons/${lessonID}/comment`, { headers }).then(response => {
+        res.comments = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res 
+}
+
+export const deleteCommentAction = async(commentID, token) => {
+    let res = {
+        message: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.delete(`${API.base_link}/lessons/${commentID}/comment`, { headers }).then(response => {
+        res.message = response.data.message
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res 
+}
+
+export const likeLessonAction = async(lessonID, token) => {
+    let res = {
+        likes: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.post(`${API.base_link}/lessons/${lessonID}/like`, null, { headers }).then(response => {
+        res.likes = response.data.likes
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res 
+}
+
+export const unlikeLessonAction = async(lessonID, token) => {
+    let res = {
+        unlikes: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.post(`${API.base_link}/lessons/${lessonID}/unlike`, null, { headers }).then(response => {
+        res.unlikes = response.data.unlikes
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res 
+}
+
+export const markAsDoneAction = async(lessonID, token) => {
+    let res = {
+        user: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.post(`${API.base_link}/lessons/${lessonID}/done`, null, { headers }).then(response => {
+        res.user = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data.message ? e.response.data.message : e.message
+    });
+
+    return res     
+}

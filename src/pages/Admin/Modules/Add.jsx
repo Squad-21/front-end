@@ -64,7 +64,7 @@ const AddModulePage = () => {
                 <ButtonContainer>
                     <Button 
                         title="Cancelar"
-                        type="cancel"
+                        variant="gray"
                         onClick={(e) => {
                             e.preventDefault();
                             navigate(-1);
