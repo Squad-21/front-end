@@ -33,7 +33,7 @@ export const courseSchema = yup.object({
         image: yup.mixed().test("required", "Forneça uma imagem válida", (image) => {
             if(image.length && image[0].type.indexOf('image') == -1) return false;
             return true;
-        })
+        }) 
 }).required();
 
 export const moduleSchema = yup.object({
