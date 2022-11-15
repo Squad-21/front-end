@@ -20,6 +20,6 @@ export const RouterNotAuth = createBrowserRouter([
   },
   {
     path: "*",
-    element: <ErrorPage />,
+    element: <LoginPage />,
   },
 ]);

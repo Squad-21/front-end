@@ -10,10 +10,11 @@ import { editCourseAction, getOneCourseAction } from '../../../service/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
+import LoadingPage from '../../Loading';
 
 const EditCoursePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate();
     const { courseID } = useParams();
@@ -54,9 +55,14 @@ const EditCoursePage = () => {
         .then(res => {
             setValue('title', res.title, { shouldValidate: true });
             setValue('description', res.description, { shouldValidate: true });
+            setIsLoading(false);
         })
         .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
+
+    if(isLoading) {
+        return <LoadingPage />
+    }
 
     return ( 
         <Container>

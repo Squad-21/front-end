@@ -9,30 +9,33 @@ import useAuthStore from "../../context/authStore";
 import { useNavigate } from "react-router-dom";
 import { Links } from "../../constants/links";
 import Notification from "./Notification";
+import LoadingPage from "../Loading";
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const { token } = useAuthStore((state) => ({ token: state.token }));
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
-      navigate(Links.login);
-      return;
-    }
 
     axios
       .get(`${API.base_link}/courses`)
       .then((res) => {
         setCourses(res.data);
         setErrorMessage(null);
+        setIsLoading(false)
       })
       .catch((e) => {
         console.log(e);
         setErrorMessage(e.response?.data.message);
       });
   }, []);
+
+  if(isLoading) {
+    return (
+      <LoadingPage />
+    )
+  }
 
   return (
     <Container>

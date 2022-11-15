@@ -15,9 +15,11 @@ import { Links } from "../../constants/links";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import useAuthStore from '../../context/authStore';
 import { calculateHoursOfLesson } from "../../service/utils";
+import LoadingPage from "../Loading";
 
 const CoursePage = () => {
     const [courseData, setCourseData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
     const { courseID } = useParams();
     const { user } = useAuthStore((state) => ({ user: state.user }));
@@ -38,7 +40,6 @@ const CoursePage = () => {
     ]
 
     const fetchData = async() => {
-
         const data = await getOneCourseAction(courseID);
 
         if(data.error) {
@@ -52,9 +53,14 @@ const CoursePage = () => {
         fetchData()
         .then(res => {
             setCourseData(res);
+            setIsLoading(false);
         })
         .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
+
+    if(isLoading) {
+        return <LoadingPage />
+    }
     
     return ( 
         <Container className="flex flex-wrap justify-center">
