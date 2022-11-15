@@ -7,16 +7,21 @@ import { Links } from "../../constants/links";
 import styled from "styled-components";
 import { Style } from "../../constants/style";
 import Button from '../Button';
+import { useNavigate } from "react-router-dom";
 
 export function Navbar() {
   const pathname = window.location.pathname;
   const isDesktopOrLaptop = useMediaQuery("(min-width:926px)");
+  const navigate = useNavigate()
 
   if(pathname == Links.home && isDesktopOrLaptop) {
     return (
       <LandingPageMenu>
         <Logo />
-        <Button title="Inscreva-se" />
+        <Button 
+          title="Inscreva-se"
+          onClick={() => navigate(Links.path.register)}
+        />
       </LandingPageMenu>
     )
   }
