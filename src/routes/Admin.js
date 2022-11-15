@@ -16,6 +16,7 @@ import AddLessonPage from "../pages/Admin/Lessons/Add";
 import EditLessonPage from "../pages/Admin/Lessons/Edit";
 import CoursePage from "../pages/Course";
 import LessonPage from "../pages/Lesson";
+import { QuestionsPage } from "../pages/Questions";
 import AdminUsersPage from "../pages/Admin/Users";
 import EditUserPage from "../pages/Admin/Users/Edit";
 
@@ -31,6 +32,10 @@ export const RouterAdmin = createBrowserRouter([
   {
     path: Links.register,
     element: <RegisterPage />,
+  },
+  {
+    path: Links.questions,
+    element: <QuestionsPage />,
   },
   {
     path: Links.courses.root,
@@ -49,8 +54,8 @@ export const RouterAdmin = createBrowserRouter([
           {
             path: `${Links.courses.lesson}/:lessonID`,
             element: <LessonPage />,
-          }
-        ]
+          },
+        ],
       },
     ],
   },
@@ -73,30 +78,30 @@ export const RouterAdmin = createBrowserRouter([
             element: <EditCoursePage />,
           },
           {
-            path: ':courseID/modulos',
+            path: ":courseID/modulos",
             element: <AdminModulesPage />,
           },
           {
-            path: ':courseID/modulos/add',
+            path: ":courseID/modulos/add",
             element: <AddModulePage />,
           },
           {
-            path: ':courseID/modulos/:moduleCode/edit',
+            path: ":courseID/modulos/:moduleCode/edit",
             element: <EditModulePage />,
           },
           {
-            path: ':courseID/modulos/:moduleCode',
+            path: ":courseID/modulos/:moduleCode",
             element: <AdminLessonsPage />,
           },
           {
-            path: ':courseID/aulas/add',
+            path: ":courseID/aulas/add",
             element: <AddLessonPage />,
           },
           {
-            path: ':courseID/aulas/:lessonID/edit',
+            path: ":courseID/aulas/:lessonID/edit",
             element: <EditLessonPage />,
-          },       
-        ]
+          },
+        ],
       },
       {
         path: Links.admin.users,
@@ -108,10 +113,10 @@ export const RouterAdmin = createBrowserRouter([
           {
             path: ":userID/edit",
             element: <EditUserPage />,
-          }
-        ]
-      }
-    ]
+          },
+        ],
+      },
+    ],
   },
   {
     path: "*",
