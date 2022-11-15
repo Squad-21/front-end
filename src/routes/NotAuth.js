@@ -4,6 +4,7 @@ import { LoginPage } from "../pages/Login";
 import { ErrorPage } from "../pages/Error";
 import RegisterPage from "../pages/Register";
 import { Links } from "../constants/links";
+import { QuestionsPage } from "../pages/Questions";
 
 export const RouterNotAuth = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const RouterNotAuth = createBrowserRouter([
   {
     path: Links.register,
     element: <RegisterPage />,
+  },
+  {
+    path: Links.questions,
+    element: <QuestionsPage />,
   },
   {
     path: "*",

@@ -1,12 +1,22 @@
 export const Links = {
-    home: '/',
-    login: '/login',
-    register: '/registrar',
-    courses: {
-      root: "/cursos",
-      dev: "dev",
-      lesson: 'aulas'
-    },
+  home: "/",
+  login: "/login",
+  register: "/registrar",
+  questions: "/duvidas",
+  profile: "/perfil",
+  courses: {
+    root: "/cursos",
+    dev: "dev",
+    lesson: "aulas",
+  },
+  admin: {
+    root: "/admin",
+    courses: "cursos",
+    modules: "modulos",
+  },
+  discord: "https://discord.com/channels/847518545156112424",
+  path: {
+    home: "/",
     admin: {
         root: '/admin',
         courses: 'cursos',
@@ -32,8 +42,8 @@ export const Links = {
           add: '/admin/cursos/add'
         }
       },
-      login: '/login',
-      register: '/registrar',
-      courses: '/cursos'
-    }
-}
+    },
+    login: "/login",
+    register: "/registrar",
+  },
+};

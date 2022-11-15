@@ -4,41 +4,46 @@ import devImg from "../../images/dev.png";
 import uxImg from "../../images/ux.png";
 import bgImg from "../../images/orange2.png";
 import { useNavigate } from "react-router-dom";
-import { Links } from '../../constants/links';
+import { Links } from "../../constants/links";
 import { FaInstagram, FaLinkedinIn, FaDiscord } from "react-icons/fa";
 import useAuthStore from "../../context/authStore";
 import { useEffect } from "react";
 
 export const HomePage = () => {
-  const { user } = useAuthStore((state) => ({ user: state.user }))
+  const { user } = useAuthStore((state) => ({ user: state.user }));
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(user) {
+    if (user) {
       navigate(Links.path.courses);
     }
-  },[])
+  }, []);
 
   return (
-    <div id="container" className="px-6 max-w-[840px] mx-auto">
+    <div
+      id="container"
+      className="px-6 max-w-[840px] mx-auto text-center sm:text-left"
+    >
       <h1 className="text-violet-550 font-bold text-4xl mt-6">
         Quer impulsionar sua carreira em Tecnologia?
       </h1>
-      <p className="text-violet-550 font-bold mt-4">
-        Explore conhecimentos que estão transformando indústrias, negócios e
-        vidas através de trilhas gratuitas em Desenvolvimento, UX/UI Design e
-        QA!
-      </p>
+      <div className="sm:flex items-center gap-10 ">
+        <p className="text-violet-550 font-bold mt-4 sm:w-[620px]">
+          Explore conhecimentos que estão transformando indústrias, negócios e
+          vidas através de trilhas gratuitas em Desenvolvimento, UX/UI Design e
+          QA!
+        </p>
 
-      <div className="mt-12 w-60 mx-auto">
-        <Button 
-          title="Inscreva-se"
-          onClick={() => navigate(Links.register)}
-        />
+        <div className="mb-7 sm:w-80 w-60 mt-12 sm:mt-0 mx-auto">
+          <Button
+            title="Inscreva-se"
+            onClick={() => navigate(Links.register)}
+          />
+        </div>
       </div>
 
       <div
-        className="flex flex-wrap gap-3 justify-center md:justify-between"
+        className="flex flex-wrap gap-3 justify-center md:justify-start md:gap-16 mt-8"
         style={{
           background: `url(${bgImg}) 80% 60%  no-repeat`,
           backgroundSize: "cover",
@@ -71,4 +76,4 @@ export const HomePage = () => {
       </footer>
     </div>
   );
-}
+};
