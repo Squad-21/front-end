@@ -13,16 +13,8 @@ export const Links = {
     root: "/admin",
     courses: "cursos",
     modules: "modulos",
+    users: "usuarios"
   },
-  discord: "https://discord.com/channels/847518545156112424",
-  path: {
-    home: "/",
-    admin: {
-        root: '/admin',
-        courses: 'cursos',
-        modules: 'modulos',
-        users: 'usuarios'
-    },
     discord: 'https://discord.com/channels/847518545156112424',
     path: {
       home: '/',
@@ -45,5 +37,4 @@ export const Links = {
     },
     login: "/login",
     register: "/registrar",
-  },
-};
+  }
