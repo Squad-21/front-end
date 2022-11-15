@@ -70,13 +70,13 @@ const DefaultBar = () => {
           <ForumIcon sx={{ marginRight: "5px" }} />
           Comunidade
         </a>
-        <a
+        {user && <a
           href={Links.questions}
           className="text-white mr-6 hover:text-orange-650"
         >
           <HelpIcon sx={{ marginRight: "5px" }} />
           Dúvidas
-        </a>
+        </a>}
         {user && <Avatar />}
       </div>
     </Container>

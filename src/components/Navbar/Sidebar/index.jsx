@@ -48,13 +48,6 @@ const NotAuth = () => {
         <MdModeComment />
         <span>Comunidade</span> 
       </Link>
-      <Link
-        className="menu-item"
-        href="#"
-      >
-        <AiFillQuestionCircle />
-        <span>Dúvidas</span> 
-      </Link>
       <hr className="divisao" />
       <Link
         className="menu-item"
