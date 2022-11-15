@@ -21,6 +21,8 @@ export const Links = {
           root: '/admin/cursos/{courseID}/modulos',
           module: '/admin/cursos/{courseID}/modulos/{moduleCode}'
         }
-      }
+      },
+      login: '/login',
+      register: '/registrar'
     }
 }

@@ -10,6 +10,8 @@ import { Style } from '../../../constants/style';
 import Avatar from "./Avatar";
 import SearchBar from './SearchBar';
 import useAuthStore from "../../../context/authStore";
+import LoginIcon from '@mui/icons-material/Login';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const DefaultBar = () => {
   const { user } = useAuthStore((state) => ({ user: state.user }))
@@ -30,10 +32,20 @@ const DefaultBar = () => {
           <ShieldIcon sx={{ marginRight: "5px" }} />
           Administração
         </a>}
-        <a href={Links.courses.root} className="text-white mr-6 hover:text-orange-650">
+        {user && <a href={Links.courses.root} className="text-white mr-6 hover:text-orange-650">
           <SchoolIcon sx={{ marginRight: "5px" }} />
           Cursos
-        </a>
+        </a>}
+        {!user && 
+        <a href={Links.path.login} className="text-white mr-6 hover:text-orange-650">
+          <LoginIcon sx={{ marginRight: "5px" }} />
+          Entrar
+        </a>}
+        {!user && 
+        <a href={Links.path.register} className="text-white mr-6 hover:text-orange-650">
+          <HowToRegIcon sx={{ marginRight: "5px" }} />
+          Registrar
+        </a>}
         <a 
           href={Links.discord} 
           className="text-white mr-6 hover:text-orange-650"

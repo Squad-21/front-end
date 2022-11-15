@@ -17,7 +17,7 @@ import EditLessonPage from "../pages/Admin/Lessons/Edit";
 import CoursePage from "../pages/Course";
 import LessonPage from "../pages/Lesson";
 
-export const router = createBrowserRouter([
+export const RouterAdmin = createBrowserRouter([
   {
     path: Links.home,
     element: <HomePage />,
@@ -54,6 +54,7 @@ export const router = createBrowserRouter([
   },
   {
     path: Links.admin.root,
+    action: () => console.log('Opa'),
     children: [
       {
         path: Links.admin.courses,
