@@ -37,8 +37,8 @@ const ButtonElement = styled.button((props) => css`
   font-weight: 700;
   border-radius: 0.25rem;
   width: 100%;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   opacity: ${props.disabled? 0.4 : 1};
   border-width: 1px;
   border-style: solid;

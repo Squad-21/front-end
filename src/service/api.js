@@ -9,11 +9,12 @@ export const registerAction = async(data) => {
         error: null
     }
     await axios.post(`${API.base_link}/auth/register`, data).then(response => {
+
         res.token = response.data.token
         res.user = response.data.user
       }).catch(e => {
         console.log(e);
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
       });
 
       return res
@@ -26,11 +27,12 @@ export const loginAction = async(data) => {
         error: null
     }
     await axios.post(`${API.base_link}/auth/authenticate`, data).then(response => {
+
         res.token = response.data.token
         res.user = response.data.user
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -46,7 +48,7 @@ export const getCoursesAction = async() => {
         res.courses = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -62,7 +64,7 @@ export const getOneCourseAction = async(courseID) => {
         res.courseData = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -81,7 +83,7 @@ export const deleteCourseAction = async(courseID, token) => {
         res.message = response.data.message
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -98,14 +100,17 @@ export const addCourseAction = async(data, token) => {
     if(data.image.length) {
         data.image = await fileToBase(data.image[0]);
     } else {
-        data.image = null
+        data = {
+            title: data.title, 
+            description: data.description
+        }
     }
 
     await axios.post(`${API.base_link}/courses`, data, { headers }).then(response => {
         res.course = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -122,14 +127,17 @@ export const editCourseAction = async(data, token, courseID) => {
     if(data.image.length) {
         data.image = await fileToBase(data.image[0]);
     } else {
-        data.image = null
+        data = {
+            title: data.title, 
+            description: data.description
+        }
     }
 
     await axios.put(`${API.base_link}/courses/${courseID}`, data, { headers }).then(response => {
         res.course = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -148,7 +156,7 @@ export const addModuleAction = async(data, token, courseID) => {
         res.module = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -173,7 +181,7 @@ export const editModuleAction = async(
         res.module = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -192,7 +200,7 @@ export const deleteModuleAction = async(token, courseID, moduleCode) => {
         res.message = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -211,7 +219,7 @@ export const addLessonAction = async(data, token) => {
         res.lesson = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res
@@ -230,7 +238,7 @@ export const editLessonAction = async(data, token, lessonID) => {
         res.lesson = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res 
@@ -249,7 +257,7 @@ export const deleteLessonAction = async(token, lessonID) => {
         res.message = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res 
@@ -268,7 +276,7 @@ export const addCommentAction = async(data, lessonID, token) => {
         res.comment = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res 
@@ -287,7 +295,7 @@ export const getCommentsAction = async(lessonID, token) => {
         res.comments = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res 
@@ -306,7 +314,7 @@ export const deleteCommentAction = async(commentID, token) => {
         res.message = response.data.message
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res 
@@ -325,7 +333,7 @@ export const likeLessonAction = async(lessonID, token) => {
         res.likes = response.data.likes
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res 
@@ -344,7 +352,7 @@ export const unlikeLessonAction = async(lessonID, token) => {
         res.unlikes = response.data.unlikes
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res 
@@ -363,7 +371,7 @@ export const markAsDoneAction = async(lessonID, token) => {
         res.user = response.data
     }).catch(e => {
         console.log(e)
-        res.error = e.response?.data.message ? e.response.data.message : e.message
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
     });
 
     return res     

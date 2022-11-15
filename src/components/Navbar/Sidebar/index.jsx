@@ -5,61 +5,79 @@ import { MdModeComment } from "react-icons/md";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { MdOutlineLightbulb } from "react-icons/md";
 import { GiExitDoor } from "react-icons/gi";
+import { FaGraduationCap } from 'react-icons/fa';
+import { Links } from '../../../constants/links';
+import styled from "styled-components";
 
 import "./index.css";
 
 export function Sidebar() {
   return (
     <Menu>
-      <a
+      <Link
         className="menu-item"
-        style={{ display: "flex", gap: "5px", alignItems: "center" }}
         href="/"
       >
         <BsHouse />
         <span>Página Inicial</span>
-      </a>
-      <a
+      </Link>
+      <Link
         className="menu-item"
-        style={{ display: "flex", gap: "5px", alignItems: "center" }}
-        href="/"
+        href={Links.courses.root}
+      >
+        <FaGraduationCap />
+        <span>Cursos</span>
+      </Link>
+      <Link
+        className="menu-item"
+        href="#"
       >
         <BsFillEmojiSunglassesFill />
-        Minha conta
-      </a>
-      <a
+        <span>Minha conta</span> 
+      </Link>
+      <Link
         className="menu-item"
-        style={{ display: "flex", gap: "5px", alignItems: "center" }}
-        href="/"
+        href="https://discord.com/channels/847518545156112424"
+        target='_blank'
       >
         <MdModeComment />
-        Comunidade
-      </a>
-      <a
+        <span>Comunidade</span> 
+      </Link>
+      <Link
         className="menu-item"
-        style={{ display: "flex", gap: "5px", alignItems: "center" }}
-        href="/"
+        href="#"
       >
         <AiFillQuestionCircle />
-        Dúvidas
-      </a>
+        <span>Dúvidas</span> 
+      </Link>
       <hr className="divisao" />
-      <a
+      <Link
         className="menu-item"
-        style={{ display: "flex", gap: "5px", alignItems: "center" }}
-        href="/"
+        href="#"
       >
         <MdOutlineLightbulb />
-        Apagar as luzes
-      </a>
-      <a
+        <span>Apagas as luzes</span> 
+      </Link>
+      <Link
         className="menu-item"
-        style={{ display: "flex", gap: "5px", alignItems: "center" }}
         href="/"
       >
         <GiExitDoor />
-        Sair
-      </a>
+        <span>Sair</span> 
+      </Link>
     </Menu>
   );
 }
+
+const Link = styled.a`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  & svg {
+    display: inline;
+  }
+  & span {
+    margin-left: 5px;
+  }
+`

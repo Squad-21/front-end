@@ -7,10 +7,12 @@ import {
 } from '@mui/material';
 import Table from "../Table";
 import FabButton from "../FabButton";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getOneCourseAction } from '../../../service/api';
 import Row from "./Row";
 import { Links } from "../../../constants/links";
+import Breadcrumbs from "../../../components/Breadcrumbs";
+import { isBrowser } from "react-device-detect";
 
 const columns = [
     {
@@ -44,6 +46,21 @@ const AdminLessonsPage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
     const { courseID, moduleCode } = useParams();
+    const currentModule = courseData?.course.modules.find(module => module.code == moduleCode);
+    const breadcrumbs = [
+        <Link key={1} to={Links.path.home}>
+            Home
+        </Link>,
+        <Link key={2} to={Links.path.admin.root}>
+            Admin
+        </Link>,
+        <Link key={3} to={Links.path.admin.modules.root.replace('{courseID}', courseID)}>
+            {courseData?.course.title}
+        </Link>,
+        <Link key={4} to={Links.path.admin.modules.module.replace('{courseID}', courseID).replace('{moduleCode}', moduleCode)}>
+            {currentModule?.title}
+        </Link>
+    ]
 
     let searchedLessons = searchText && searchText != ''?
         courseData?.lessons.filter(lesson => lesson.title.toLowerCase().indexOf(searchText.toLowerCase()) != -1 && lesson.module == moduleCode) 
@@ -76,6 +93,7 @@ const AdminLessonsPage = () => {
                     {errorMessage}
                 </Alert>
             }
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
             <SearchContainer>
                 <Input
                     name="search"
@@ -92,17 +110,17 @@ const AdminLessonsPage = () => {
                     paddingTop: '2rem'
                 }}
             >
-                Módulo 1 - Introdução {moduleCode}
+                {currentModule?.title}
             </Typography>
             <Table columns={columns}>
                 {
                     searchedLessons?.map(lesson => 
-                            <Row 
-                                lesson={lesson}
-                                courseID={courseID}
-                                key={lesson._id}
-                                getData={fetchData}
-                            />
+                        <Row 
+                            lesson={lesson}
+                            courseID={courseID}
+                            key={lesson._id}
+                            getData={fetchData}
+                        />
                     )
                 }
             </Table>
@@ -123,7 +141,7 @@ const SearchContainer = styled.div`
 const Input = styled.input((props) => css`
     border-radius: 0.25rem;
     border: 0.3px solid #ADADAD;
-    width: 100%;
+    width: ${isBrowser? '50%' : '100%'};
     font-size: 0.875rem;
     line-height: 1.25rem;
     padding: 0.75rem;

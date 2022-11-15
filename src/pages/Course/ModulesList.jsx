@@ -16,18 +16,32 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { useNavigate } from "react-router-dom";
 import { Links } from '../../constants/links'
+import { Style } from "../../constants/style";
+import './style.css';
 
 const ListElement = ({lessons}) => {
     const navigate = useNavigate();
+    const goToLesson = (lesson) => {
+        navigate(`${Links.courses.root}/${lesson.course}/${Links.courses.lesson}/${lesson._id}`)
+    }
 
     return (
-        <List>
+        <List
+            sx={{
+                border: `1px solid ${Style.colors["light-gray"]}`,
+                borderRadius: '4px',
+                padding: 0,
+                backgroundColor: Style.colors["gray-10"],
+                color: Style.colors["gray-550"],
+                marginTop: '0.5rem'
+            }}
+        >
             {lessons.map((lesson, index) => 
                 <ListItem 
                     key={lesson._id} 
                     disablePadding
                     divider={index + 1 != lessons.length}
-                    onClick={() => navigate(`${Links.courses.root}/${lesson.course}/${Links.courses.lesson}/${lesson._id}`)}
+                    onClick={() => goToLesson(lesson)}
                 >
                     <ListItemButton>
                         <ListItemIcon>
@@ -45,15 +59,29 @@ const ListElement = ({lessons}) => {
 
 const AccordionElement = ({module, lessons}) => {
     return (
-        <Accordion sx={{minWidth: '100%'}}>
+        <Accordion 
+            sx={{
+                minWidth: '100%',
+                marginBottom: '1rem',
+                '.MuiPaper-elevation:before': {
+                    display: 'none'
+                }
+            }} 
+            elevation={0}
+        >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                sx={{
+                    border: `1px solid ${Style.colors["light-gray"]}`,
+                    borderRadius: '4px',
+                }}
             >
                 <Typography
                     sx={{
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        color: Style.colors["gray-550"]
                     }}
                 >
                     {module.title}

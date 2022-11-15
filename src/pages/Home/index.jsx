@@ -3,10 +3,13 @@ import { HomeCard } from "./Card";
 import devImg from "../../images/dev.png";
 import uxImg from "../../images/ux.png";
 import bgImg from "../../images/orange2.png";
-
+import { useNavigate } from "react-router-dom";
+import { Links } from '../../constants/links';
 import { FaInstagram, FaLinkedinIn, FaDiscord } from "react-icons/fa";
 
-export function HomePage() {
+export const HomePage = () => {
+  const navigate = useNavigate();
+
   return (
     <div id="container" className="px-6 max-w-[840px] mx-auto">
       <h1 className="text-violet-550 font-bold text-4xl mt-6">
@@ -19,7 +22,10 @@ export function HomePage() {
       </p>
 
       <div className="mt-12 w-60 mx-auto">
-        <Button title="Inscreva-se" />
+        <Button 
+          title="Inscreva-se"
+          onClick={() => navigate(Links.register)}
+        />
       </div>
 
       <div

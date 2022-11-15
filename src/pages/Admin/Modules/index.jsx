@@ -7,10 +7,12 @@ import {
     Alert,
     AlertTitle
 } from '@mui/material';
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Links } from '../../../constants/links';
 import Row from './Row';
 import FabButton from '../FabButton';
+import Breadcrumbs from '../../../components/Breadcrumbs';
+import { isBrowser } from 'react-device-detect';
 
 const columns = [
     {
@@ -44,6 +46,17 @@ const AdminModulesPage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
     const { courseID } = useParams();
+    const breadcrumbs = [
+        <Link key={1} to={Links.path.home}>
+            Home
+        </Link>,
+        <Link key={2} to={Links.path.admin.root}>
+            Admin
+        </Link>,
+        <Link key={3} to={Links.path.admin.modules.root.replace('{courseID}', courseID)}>
+            {courseData?.course.title}
+        </Link>
+    ]
 
     let searchedModules = searchText && searchText != ''?
         courseData?.course.modules.filter(course => course.title.toLowerCase().indexOf(searchText.toLowerCase()) != -1) 
@@ -75,6 +88,7 @@ const AdminModulesPage = () => {
                     {errorMessage}
                 </Alert>
             }
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
             <SearchContainer>
                 <Input
                     name="search"
@@ -127,7 +141,7 @@ const SearchContainer = styled.div`
 const Input = styled.input((props) => css`
     border-radius: 0.25rem;
     border: 0.3px solid #ADADAD;
-    width: 100%;
+    width: ${isBrowser? '50%' : '100%'};
     font-size: 0.875rem;
     line-height: 1.25rem;
     padding: 0.75rem;

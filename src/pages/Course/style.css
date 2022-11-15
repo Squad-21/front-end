@@ -1,0 +1,7 @@
+.MuiPaper-elevation:before {
+    display: none;
+}
+.MuiAccordionSummary-root.Mui-expanded, .MuiAccordionSummary-root {
+    min-height: auto!important;
+    height: 55px!important;
+}
