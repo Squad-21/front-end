@@ -10,7 +10,8 @@ export const Links = {
     admin: {
         root: '/admin',
         courses: 'cursos',
-        modules: 'modulos'
+        modules: 'modulos',
+        users: 'usuarios'
     },
     discord: 'https://discord.com/channels/847518545156112424',
     path: {
@@ -20,9 +21,13 @@ export const Links = {
         modules: {
           root: '/admin/cursos/{courseID}/modulos',
           module: '/admin/cursos/{courseID}/modulos/{moduleCode}'
+        },
+        users: {
+          root: '/admin/usuarios'
         }
       },
       login: '/login',
-      register: '/registrar'
+      register: '/registrar',
+      courses: '/cursos'
     }
 }

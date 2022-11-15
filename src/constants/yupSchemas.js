@@ -26,11 +26,14 @@ export const loginSchema = yup
 
 export const courseSchema = yup.object({
         title: yup.string().required("Digite um título"),
-        description: yup.string().required("Digite uma descrição"),
+        description: yup.string().test("required", "Forneça uma descrição válida com até 280 caracteres", (description) => {
+            if(description.length > 280) return false;
+            return true;
+        }),
         image: yup.mixed().test("required", "Forneça uma imagem válida", (image) => {
             if(image.length && image[0].type.indexOf('image') == -1) return false;
             return true;
-        })
+        }) 
 }).required();
 
 export const moduleSchema = yup.object({
@@ -59,4 +62,14 @@ export const lessonSchema = yup.object({
 
 export const commentSchema = yup.object({
     content: yup.string().required("Digite um comentário")
+}).required();
+
+export const userSchema = yup.object({
+    name: yup.string().required("Digite um nome"),
+    email: yup.string().test("required", "Forneça um email válido", (email) => {
+        if(email.indexOf('@') == -1) return false;
+        return true;
+    }),
+    admin: yup.boolean().required("Forneça um nível"),
+    avatar: yup.mixed()
 }).required();
