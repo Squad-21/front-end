@@ -9,7 +9,7 @@ import LessonPage from "../pages/Lesson";
 export const RouterAuth = createBrowserRouter([
   {
     path: Links.home,
-    element: <CoursesPage />,
+    element: <HomePage />,
   },
   {
     path: Links.courses.root,

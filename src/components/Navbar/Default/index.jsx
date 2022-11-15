@@ -56,7 +56,7 @@ const DefaultBar = () => {
           <HelpIcon sx={{ marginRight: "5px" }} />
           Dúvidas
         </a>
-        <Avatar />
+        {user && <Avatar />}
       </div>
     </Container>
   );

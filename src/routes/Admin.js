@@ -16,11 +16,13 @@ import AddLessonPage from "../pages/Admin/Lessons/Add";
 import EditLessonPage from "../pages/Admin/Lessons/Edit";
 import CoursePage from "../pages/Course";
 import LessonPage from "../pages/Lesson";
+import AdminUsersPage from "../pages/Admin/Users";
+import EditUserPage from "../pages/Admin/Users/Edit";
 
 export const RouterAdmin = createBrowserRouter([
   {
     path: Links.home,
-    element: <CoursesPage />,
+    element: <HomePage />,
   },
   {
     path: Links.login,
@@ -54,7 +56,6 @@ export const RouterAdmin = createBrowserRouter([
   },
   {
     path: Links.admin.root,
-    action: () => console.log('Opa'),
     children: [
       {
         path: Links.admin.courses,
@@ -95,6 +96,19 @@ export const RouterAdmin = createBrowserRouter([
             path: ':courseID/aulas/:lessonID/edit',
             element: <EditLessonPage />,
           },       
+        ]
+      },
+      {
+        path: Links.admin.users,
+        children: [
+          {
+            path: "",
+            element: <AdminUsersPage />,
+          },
+          {
+            path: ":userID/edit",
+            element: <EditUserPage />,
+          }
         ]
       }
     ]

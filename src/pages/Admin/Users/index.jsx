@@ -1,31 +1,31 @@
-import { useState, useEffect } from "react";
-import styled, { css } from "styled-components";
+import { useEffect, useState } from "react";
 import { 
     Typography, 
     Alert,
     AlertTitle
 } from '@mui/material';
-import Table from "../Table";
-import FabButton from "../FabButton";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { getOneCourseAction } from '../../../service/api';
-import Row from "./Row";
-import { Links } from "../../../constants/links";
+import styled, { css } from "styled-components";
 import Breadcrumbs from "../../../components/Breadcrumbs";
-import LoadingPage from '../../Loading';
 import SearchBar from "../SearchBar";
+import Table from "../Table";
+import { Links } from "../../../constants/links";
+import { Link } from "react-router-dom";
+import LoadingPage from "../../Loading";
+import useAuthStore from "../../../context/authStore";
+import { getAllUsersAction } from "../../../service/api";
+import Row from "./Row";
 
 const columns = [
     {
-        id: 'lesson',
-        label: 'Aula',
+        id: 'name',
+        label: 'Nome',
         textAlign: 'left',
         minWidth: 170,
         maxWidth: 170
     },
     {
-        id: 'likes',
-        label: 'Curtidas',
+        id: 'admin',
+        label: 'Nível',
         textAlign: 'center',
         minWidth: 50,
         maxWidth: 100
@@ -40,51 +40,44 @@ const columns = [
     }
 ]
 
-const AdminLessonsPage = () => {
-    const [courseData, setCourseData] = useState(null)
+const AdminUsersPage = () => {
+    const [allUsers, setAllUsers] = useState(null);
     const [searchText, setSearchText] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
-    const navigate = useNavigate();
-    const { courseID, moduleCode } = useParams();
-    const currentModule = courseData?.course.modules.find(module => module.code == moduleCode);
+    const { user, token } = useAuthStore((state) => ({user: state.user, token: state.token}));
+
+    let searchedUsers = searchText && searchText != ''?
+    allUsers.filter(user => user.name.toLowerCase().indexOf(searchText.toLowerCase()) != -1) 
+    : allUsers
     const breadcrumbs = [
-        <Link key={1} to={Links.path.home}>
-            Home
-        </Link>,
-        <Link key={2} to={Links.path.admin.root}>
+        <Link key={1} to={Links.path.admin.root}>
             Admin
         </Link>,
-        <Link key={3} to={Links.path.admin.modules.root.replace('{courseID}', courseID)}>
-            {courseData?.course.title}
-        </Link>,
-        <Link key={4} to={Links.path.admin.modules.module.replace('{courseID}', courseID).replace('{moduleCode}', moduleCode)}>
-            {currentModule?.title}
+        <Link key={2} to={Links.path.admin.users.root}>
+            Usuários
         </Link>
     ]
 
-    let searchedLessons = searchText && searchText != ''?
-        courseData?.lessons.filter(lesson => lesson.title.toLowerCase().indexOf(searchText.toLowerCase()) != -1 && lesson.module == moduleCode) 
-        : courseData?.lessons.filter(lesson => lesson.module == moduleCode)
-
     const fetchData = async() => {
 
-        const data = await getOneCourseAction(courseID);
+        const data = await getAllUsersAction(token);
 
         if(data.error) {
             setIsLoading(false);
             setErrorMessage(data.error)
             return 
         }
-        setCourseData(data.courseData);
+        setAllUsers(data.users.users);
         setErrorMessage(null);
-        return data.courseData
+        return data.users
     }
 
     useEffect(() => {
         fetchData()
         .then(res => {
             setIsLoading(false);
+            console.log(res);
         })
         .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
@@ -100,7 +93,7 @@ const AdminLessonsPage = () => {
                     <AlertTitle>Erro</AlertTitle>
                     {errorMessage}
                 </Alert>
-            }
+            } 
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <SearchBar
                 value={searchText}
@@ -114,28 +107,24 @@ const AdminLessonsPage = () => {
                     paddingTop: '2rem'
                 }}
             >
-                {currentModule?.title}
+                Todos os usuários
             </Typography>
             <Table columns={columns}>
                 {
-                    searchedLessons?.map(lesson => 
+                    searchedUsers?.map(user =>  
                         <Row 
-                            lesson={lesson}
-                            courseID={courseID}
-                            key={lesson._id}
+                            user={user} 
+                            key={user._id}
                             getData={fetchData}
                         />
                     )
                 }
             </Table>
-            <FabButton
-                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/aulas/add`)}
-            />
         </Container>
-    );
+     );
 }
  
-export default AdminLessonsPage;
+export default AdminUsersPage;
 
 const Container = styled.div`
     padding: 1rem;

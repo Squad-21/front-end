@@ -88,7 +88,7 @@ const EditLessonPage = () => {
 
     return ( 
         <Container>
-            <Title>Adicionar Aula</Title>
+            <Title>Editar Aula</Title>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 {errorMessage && 
                     <Alert severity="error">
