@@ -11,5 +11,16 @@ export const Links = {
         root: '/admin',
         courses: 'cursos',
         modules: 'modulos'
+    },
+    discord: 'https://discord.com/channels/847518545156112424',
+    path: {
+      home: '/',
+      admin: {
+        root: '/admin/cursos',
+        modules: {
+          root: '/admin/cursos/{courseID}/modulos',
+          module: '/admin/cursos/{courseID}/modulos/{moduleCode}'
+        }
+      }
     }
 }

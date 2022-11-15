@@ -30,7 +30,7 @@ const LessonPage = () => {
     }));
     const currentLesson = courseData?.lessons.find(lesson => lesson._id == lessonID);
     const currentModule = currentLesson? courseData.course.modules.find(module => module.code == currentLesson.module) : null
-    const lessonHasBeenDone = user.lessons.find(lesson => lesson.lessonID == lessonID)
+    const lessonHasBeenDone = user?.lessons.find(lesson => lesson.lessonID == lessonID)
     const breadcrumbs = [
         <Link to={`${Links.courses.root}/${courseID}`} key='1'>
             {courseData?.course.title}

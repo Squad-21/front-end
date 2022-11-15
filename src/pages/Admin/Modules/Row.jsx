@@ -37,6 +37,9 @@ const ListOptions = ({
         }
         await getData()
     }
+
+    console.log(module);
+    
     return (
         <List component="nav">
             <ListItemButton

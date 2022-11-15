@@ -24,9 +24,6 @@ const AddCoursePage = () => {
         resolver: yupResolver(courseSchema),
       });
       const onSubmit = async(data, e) => {
-        if(data.image.length) {
-            data.image = data.image[0];
-        }
         
         setIsLoading(true);
         const addCourseData = await addCourseAction(data, token);

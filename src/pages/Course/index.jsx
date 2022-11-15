@@ -22,7 +22,7 @@ const CoursePage = () => {
     const { courseID } = useParams();
     const { user } = useAuthStore((state) => ({ user: state.user }));
     const isDesktop = useIsDesktop();
-    const lessonsDone = user.lessons.filter(lesson => lesson.courseID == courseID).length;
+    const lessonsDone = user?.lessons.filter(lesson => lesson.courseID == courseID).length;
     const lessonsDonePercentage = (100 * lessonsDone) / courseData?.lessons.length;
     const time = calculateHoursOfLesson(courseData?.lessons);
     const breadcrumns = [

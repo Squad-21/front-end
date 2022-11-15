@@ -7,17 +7,27 @@ import {
     Alert,
     AlertTitle
 } from '@mui/material';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Links } from '../../../constants/links';
 import Row from './Row';
 import FabButton from '../FabButton';
+import Breadcrumbs from '../../../components/Breadcrumbs';
+import { isBrowser } from 'react-device-detect';
 
 const AdminCoursesPage = () => {
     const [allCourses, setAllCourses] =  useState(null);
     const [searchText, setSearchText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const breadcrumbs = [
+        <Link key={1} to={Links.path.home}>
+            Home
+        </Link>,
+        <Link key={2} to={Links.path.admin.root}>
+            Admin
+        </Link>
+    ]
 
     let searchedCourses = searchText && searchText != ''?
         allCourses.filter(course => course.title.toLowerCase().indexOf(searchText.toLowerCase()) != -1) 
@@ -73,6 +83,7 @@ const AdminCoursesPage = () => {
                     {errorMessage}
                 </Alert>
             }
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
             <SearchContainer>
                 <Input
                     name="search"
@@ -120,7 +131,7 @@ const SearchContainer = styled.div`
 const Input = styled.input((props) => css`
     border-radius: 0.25rem;
     border: 0.3px solid #ADADAD;
-    width: 100%;
+    width: ${isBrowser? '50%' : '100%'};
     font-size: 0.875rem;
     line-height: 1.25rem;
     padding: 0.75rem;
