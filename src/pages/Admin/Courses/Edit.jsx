@@ -61,7 +61,7 @@ const EditCoursePage = () => {
         .catch(e => setErrorMessage('Erro ao obter dados'))
     },[])
 
-    if(true) {
+    if(isLoading) {
         return <LoadingPage />
     }
 
