@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
 import LoadingPage from '../../Loading';
+import AdminContent from '../AdminContent';
 
 const EditModulePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -69,7 +70,7 @@ const EditModulePage = () => {
     }
 
     return ( 
-        <Container>
+        <AdminContent active='course'>
             <Title>Editar Curso</Title>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 {errorMessage && 
@@ -106,7 +107,7 @@ const EditModulePage = () => {
                     />
                 </ButtonContainer>
             </Form>
-        </Container>
+        </AdminContent>
     );
 }
  

@@ -16,7 +16,7 @@ import { Style } from '../../../constants/style';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useAuthStore from "../../../context/authStore";
-import { deleteCourseAction } from '../../../service/api';
+import { deleteUserAction } from '../../../service/api';
 import { useNavigate } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 
@@ -25,7 +25,7 @@ const ListOptions = ({user, getData}) => {
     const navigate = useNavigate();
 
     const handleDelete = async() => {
-        const data = await deleteCourseAction();
+        const data = await deleteUserAction(user._id, token);
 
         if(data.error) {
             alert(data.error)
@@ -37,7 +37,7 @@ const ListOptions = ({user, getData}) => {
     return (
         <List component="nav">
             <ListItemButton
-                onClick={() => navigate(``)}
+                onClick={() => navigate(Links.path.admin.users.edit.replace('{userID}', user._id))}
             >
                 <ListItemIcon>
                     <EditIcon />

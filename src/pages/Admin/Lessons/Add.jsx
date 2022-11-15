@@ -11,6 +11,7 @@ import { addLessonAction, getOneCourseAction } from "../../../service/api";
 import { API } from "../../../constants/api";
 import { Links } from "../../../constants/links";
 import useAuthStore from "../../../context/authStore";
+import AdminContent from "../AdminContent";
 
 const AddLessonPage = () => {
     const [courseData, setCourseData] = useState(null);
@@ -62,7 +63,7 @@ const AddLessonPage = () => {
     },[])
 
     return ( 
-        <Container>
+        <AdminContent active='course'>
             <Title>Adicionar Aula</Title>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 {errorMessage && 
@@ -130,7 +131,7 @@ const AddLessonPage = () => {
                     />
                 </ButtonContainer>
             </Form>
-        </Container>
+        </AdminContent>
     );
 }
  

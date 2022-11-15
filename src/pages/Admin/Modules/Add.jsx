@@ -10,6 +10,7 @@ import { addModuleAction } from '../../../service/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
+import AdminContent from "../AdminContent";
 
 const AddModulePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -39,7 +40,7 @@ const AddModulePage = () => {
     }
 
     return ( 
-        <Container>
+        <AdminContent active='course'>
             <Title>Adicionar Módulo</Title>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 {errorMessage && 
@@ -76,7 +77,7 @@ const AddModulePage = () => {
                     />
                 </ButtonContainer>
             </Form>
-        </Container>
+        </AdminContent>
     );
 }
  

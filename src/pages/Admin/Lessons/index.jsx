@@ -14,6 +14,7 @@ import { Links } from "../../../constants/links";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import LoadingPage from '../../Loading';
 import SearchBar from "../SearchBar";
+import AdminContent from "../AdminContent";
 
 const columns = [
     {
@@ -49,11 +50,11 @@ const AdminLessonsPage = () => {
     const { courseID, moduleCode } = useParams();
     const currentModule = courseData?.course.modules.find(module => module.code == moduleCode);
     const breadcrumbs = [
-        <Link key={1} to={Links.path.home}>
-            Home
+        <Link key={1} to={Links.path.admin.root}>
+            Admin
         </Link>,
         <Link key={2} to={Links.path.admin.root}>
-            Admin
+            Cursos
         </Link>,
         <Link key={3} to={Links.path.admin.modules.root.replace('{courseID}', courseID)}>
             {courseData?.course.title}
@@ -95,42 +96,44 @@ const AdminLessonsPage = () => {
 
     return ( 
         <Container>
-            {errorMessage && 
-                <Alert severity="error" sx={{marginBottom: '1rem'}}>
-                    <AlertTitle>Erro</AlertTitle>
-                    {errorMessage}
-                </Alert>
-            }
-            <Breadcrumbs breadcrumbs={breadcrumbs} />
-            <SearchBar
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-            />
-            <Typography 
-                variant="h5" 
-                component="div"
-                fontWeight='bold'
-                sx={{
-                    paddingTop: '2rem'
-                }}
-            >
-                {currentModule?.title}
-            </Typography>
-            <Table columns={columns}>
-                {
-                    searchedLessons?.map(lesson => 
-                        <Row 
-                            lesson={lesson}
-                            courseID={courseID}
-                            key={lesson._id}
-                            getData={fetchData}
-                        />
-                    )
+            <AdminContent active='course'>
+                {errorMessage && 
+                    <Alert severity="error" sx={{marginBottom: '1rem'}}>
+                        <AlertTitle>Erro</AlertTitle>
+                        {errorMessage}
+                    </Alert>
                 }
-            </Table>
-            <FabButton
-                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/aulas/add`)}
-            />
+                <Breadcrumbs breadcrumbs={breadcrumbs} />
+                <SearchBar
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                />
+                <Typography 
+                    variant="h5" 
+                    component="div"
+                    fontWeight='bold'
+                    sx={{
+                        paddingTop: '2rem'
+                    }}
+                >
+                    {currentModule?.title}
+                </Typography>
+                <Table columns={columns}>
+                    {
+                        searchedLessons?.map(lesson => 
+                            <Row 
+                                lesson={lesson}
+                                courseID={courseID}
+                                key={lesson._id}
+                                getData={fetchData}
+                            />
+                        )
+                    }
+                </Table>
+                <FabButton
+                    onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/aulas/add`)}
+                />
+            </AdminContent>
         </Container>
     );
 }
@@ -138,5 +141,4 @@ const AdminLessonsPage = () => {
 export default AdminLessonsPage;
 
 const Container = styled.div`
-    padding: 1rem;
 `

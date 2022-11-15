@@ -395,3 +395,69 @@ export const getAllUsersAction = async(token) => {
 
     return res     
 }
+
+export const getOneUserAction = async(userID, token) => {
+    let res = {
+        user: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.get(`${API.base_link}/auth/${userID}`, { headers }).then(response => {
+        res.user = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
+    });
+
+    return res     
+}
+
+export const editUserAction = async(data, token, userID) => {
+    let res = {
+        user: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+    if(data.avatar.length) {
+        data.avatar = await fileToBase(data.avatar[0]);
+    } else {
+        data = {
+            name: data.name, 
+            email: data.email,
+            admin: data.admin
+        }
+    }
+
+    await axios.put(`${API.base_link}/auth/${userID}`, data, { headers }).then(response => {
+        res.user = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
+    });
+
+    return res
+}
+
+export const deleteUserAction = async(userID, token) => {
+    let res = {
+        user: null,
+        error: null
+    }
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    }
+
+    await axios.delete(`${API.base_link}/auth/${userID}`, { headers }).then(response => {
+        res.user = response.data
+    }).catch(e => {
+        console.log(e)
+        res.error = e.response?.data ? `${e.response.data.message} ${e.response.data?.error}` : e.message
+    });
+
+    return res     
+}

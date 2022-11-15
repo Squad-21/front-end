@@ -10,6 +10,7 @@ import { addCourseAction } from '../../../service/api';
 import { useNavigate } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
+import AdminContent from '../AdminContent';
 
 const AddCoursePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
@@ -40,49 +41,51 @@ const AddCoursePage = () => {
 
     return ( 
         <Container>
-            <Title>Adicionar Curso</Title>
-            <Form onSubmit={handleSubmit(onSubmit, onError)}>
-                {errorMessage && 
-                    <Alert severity="error">
-                        <AlertTitle>Erro</AlertTitle>
-                        {errorMessage}
-                    </Alert>
-                }
-                <FormItem
-                    title="Título"
-                    name="title"
-                    errorMessage={errors.title?.message}
-                    registerForm={register("title")}
-                />
-                <FormItem
-                    title="Descrição"
-                    name="description"
-                    type="textarea"
-                    errorMessage={errors.description?.message}
-                    registerForm={register("description")}
-                />
-                <FormItem
-                    title="Imagem"
-                    name="image"
-                    type="file"
-                    errorMessage={errors.image?.message}
-                    registerForm={register("image")}
-                />
-                <ButtonContainer>
-                    <Button 
-                        title="Cancelar"
-                        variant="gray"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            navigate(`${Links.admin.root}/${Links.admin.courses}`);
-                        }}
+            <AdminContent active='course'>
+                <Title>Adicionar Curso</Title>
+                <Form onSubmit={handleSubmit(onSubmit, onError)}>
+                    {errorMessage && 
+                        <Alert severity="error">
+                            <AlertTitle>Erro</AlertTitle>
+                            {errorMessage}
+                        </Alert>
+                    }
+                    <FormItem
+                        title="Título"
+                        name="title"
+                        errorMessage={errors.title?.message}
+                        registerForm={register("title")}
                     />
-                    <Button
-                        title="Salvar"
-                        disabled={isLoading}
+                    <FormItem
+                        title="Descrição"
+                        name="description"
+                        type="textarea"
+                        errorMessage={errors.description?.message}
+                        registerForm={register("description")}
                     />
-                </ButtonContainer>
-            </Form>
+                    <FormItem
+                        title="Imagem"
+                        name="image"
+                        type="file"
+                        errorMessage={errors.image?.message}
+                        registerForm={register("image")}
+                    />
+                    <ButtonContainer>
+                        <Button 
+                            title="Cancelar"
+                            variant="gray"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                navigate(`${Links.admin.root}/${Links.admin.courses}`);
+                            }}
+                        />
+                        <Button
+                            title="Salvar"
+                            disabled={isLoading}
+                        />
+                    </ButtonContainer>
+                </Form>
+            </AdminContent>
         </Container>
     );
 }
@@ -90,7 +93,6 @@ const AddCoursePage = () => {
 export default AddCoursePage;
 
 const Container = styled.div`
-    padding: 1rem;
 `
 const Form = styled.form``
 const ButtonContainer = styled.div`

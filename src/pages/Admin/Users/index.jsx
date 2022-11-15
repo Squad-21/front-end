@@ -14,6 +14,7 @@ import LoadingPage from "../../Loading";
 import useAuthStore from "../../../context/authStore";
 import { getAllUsersAction } from "../../../service/api";
 import Row from "./Row";
+import AdminContent from '../AdminContent';
 
 const columns = [
     {
@@ -43,7 +44,7 @@ const columns = [
 const AdminUsersPage = () => {
     const [allUsers, setAllUsers] = useState(null);
     const [searchText, setSearchText] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
     const { user, token } = useAuthStore((state) => ({user: state.user, token: state.token}));
 
@@ -87,7 +88,7 @@ const AdminUsersPage = () => {
     }
 
     return ( 
-        <Container>
+        <AdminContent active='users'>
             {errorMessage && 
                 <Alert severity="error" sx={{marginBottom: '1rem'}}>
                     <AlertTitle>Erro</AlertTitle>
@@ -120,7 +121,7 @@ const AdminUsersPage = () => {
                     )
                 }
             </Table>
-        </Container>
+        </AdminContent>
      );
 }
  

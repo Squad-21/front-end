@@ -15,6 +15,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs';
 import { isBrowser } from 'react-device-detect';
 import LoadingPage from '../../Loading';
 import SearchBar from '../SearchBar';
+import AdminContent from '../AdminContent';
 
 const columns = [
     {
@@ -49,11 +50,11 @@ const AdminModulesPage = () => {
     const navigate = useNavigate();
     const { courseID } = useParams();
     const breadcrumbs = [
-        <Link key={1} to={Links.path.home}>
-            Home
+        <Link key={1} to={Links.path.admin.root}>
+            Admin
         </Link>,
         <Link key={2} to={Links.path.admin.root}>
-            Admin
+            Cursos
         </Link>,
         <Link key={3} to={Links.path.admin.modules.root.replace('{courseID}', courseID)}>
             {courseData?.course.title}
@@ -92,46 +93,48 @@ const AdminModulesPage = () => {
 
     return ( 
         <Container>
-            {errorMessage && 
-                <Alert severity="error" sx={{marginBottom: '1rem'}}>
-                    <AlertTitle>Erro</AlertTitle>
-                    {errorMessage}
-                </Alert>
-            }
-            <Breadcrumbs breadcrumbs={breadcrumbs} />
-            <SearchBar
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-            />
-            <Typography 
-                variant="h5" 
-                component="div"
-                fontWeight='bold'
-                sx={{
-                    paddingTop: '2rem'
-                }}
-            >
-                {courseData?.course.title}
-            </Typography>
-            <Table columns={columns}>
-                {
-                    searchedModules?.map((module, index) => {
-                        module.lessons = courseData.lessons.filter(lesson => lesson.module == module.code)
-                        return (
-                            <Row 
-                                module={module}
-                                courseID={courseID}
-                                index={index + 1}
-                                key={module._id}
-                                getData={fetchData}
-                            />
-                        )
-                    })
+            <AdminContent active="course">
+                {errorMessage && 
+                    <Alert severity="error" sx={{marginBottom: '1rem'}}>
+                        <AlertTitle>Erro</AlertTitle>
+                        {errorMessage}
+                    </Alert>
                 }
-            </Table>
-            <FabButton
-                onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos/add`)}
-            />
+                <Breadcrumbs breadcrumbs={breadcrumbs} />
+                <SearchBar
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                />
+                <Typography 
+                    variant="h5" 
+                    component="div"
+                    fontWeight='bold'
+                    sx={{
+                        paddingTop: '2rem'
+                    }}
+                >
+                    {courseData?.course.title}
+                </Typography>
+                <Table columns={columns}>
+                    {
+                        searchedModules?.map((module, index) => {
+                            module.lessons = courseData.lessons.filter(lesson => lesson.module == module.code)
+                            return (
+                                <Row 
+                                    module={module}
+                                    courseID={courseID}
+                                    index={index + 1}
+                                    key={module._id}
+                                    getData={fetchData}
+                                />
+                            )
+                        })
+                    }
+                </Table>
+                <FabButton
+                    onClick={() => navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos/add`)}
+                />
+            </AdminContent>
         </Container>
      );
 }
@@ -139,5 +142,4 @@ const AdminModulesPage = () => {
 export default AdminModulesPage;
 
 const Container = styled.div`
-    padding: 1rem;
 `
