@@ -38,7 +38,15 @@ const Comment = ({data, getData}) => {
     return (
         <CommentContainer>
             <AvatarContainer>
-                <Avatar alt={data.author.name} src={data.author.avatar.url} />
+                <Avatar 
+                    alt={data.author.name} 
+                    src={data.author.avatar.url} 
+                    sx={{
+                        '.MuiAvatar-img': {
+                          objectFit: 'fill'
+                        }
+                    }}
+                />
             </AvatarContainer>
             <InformationContainer>
                 <Name>{data.author.name}</Name> <Date>{formatDate(data.createdAt)}</Date>

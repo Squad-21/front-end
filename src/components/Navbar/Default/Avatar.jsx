@@ -65,7 +65,7 @@ const Avatar = () => {
   return (
     <StyledBadge
       overlap="circular"
-      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       variant="dot"
     >
       <AvatarContainer aria-describedby={id} onClick={handleClick}>
@@ -74,6 +74,9 @@ const Avatar = () => {
           src={user?.avatar.url}
           sx={{
             backgroundColor: Style.colors["orange-650"],
+            '.MuiAvatar-img': {
+              objectFit: 'fill'
+            }
           }}
         >
           C
@@ -89,7 +92,7 @@ const Avatar = () => {
           horizontal: "left",
         }}
         sx={{
-          cursor: "pointer",
+          cursor: "pointer"
         }}
       >
         <List component="nav">

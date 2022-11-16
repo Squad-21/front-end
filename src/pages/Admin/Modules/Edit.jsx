@@ -12,10 +12,12 @@ import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
 import LoadingPage from '../../Loading';
 import AdminContent from '../AdminContent';
+import Snackbar from '../Snackbar';
 
 const EditModulePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [snackIsOpen, setSnackIsOpen] = useState(false);
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate();
     const { courseID, moduleCode } = useParams();
@@ -41,6 +43,7 @@ const EditModulePage = () => {
             setErrorMessage(editModuleData.error);
             return 
         }
+        setSnackIsOpen(true);
         setErrorMessage(null);
         navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos`);
     }
@@ -107,6 +110,11 @@ const EditModulePage = () => {
                     />
                 </ButtonContainer>
             </Form>
+            <Snackbar
+                isOpen={snackIsOpen}
+                setIsOpen={setSnackIsOpen}
+                type={'success'}
+            />
         </AdminContent>
     );
 }

@@ -1,13 +1,31 @@
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
+import { useState } from 'react';
+import { Links } from '../../../constants/links';
 
 const SearchBar = () => {
+    const [searchText, setSearchText] = useState('')
+
+    const handleChange = (e) => {
+        setSearchText(e.target.value)
+    }
+
+    const handleSearch = () => {
+        if(!searchText || searchText == '') return
+
+        window.location.href = Links.path.searchCourse.replace('{searchText}', searchText.toLowerCase())
+    }
     return ( 
         <Container>
             <Input
+                value={searchText}
+                onChange={handleChange}
             />
-            <IconButton size='small'>
+            <IconButton 
+                size='small'
+                onClick={handleSearch}
+            >
                 <SearchIcon />
             </IconButton>
         </Container>

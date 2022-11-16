@@ -5,30 +5,42 @@ import axios from "axios";
 import { API } from "../../constants/api";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import useAuthStore from "../../context/authStore";
-import { useNavigate } from "react-router-dom";
-import { Links } from "../../constants/links";
+import { useParams } from "react-router-dom";
 import Notification from "./Notification";
 import LoadingPage from "../Loading";
+import { getCoursesAction } from "../../service/api";
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const { courseSearched } = useParams();
+  const coursesFiltered = courseSearched && courses? courses.filter(course => course.title.toLowerCase().indexOf(courseSearched) != -1) : courses
+
+  const fetchData = async() => {
+    const data = await getCoursesAction()
+
+    if(data.error) {
+      setIsLoading(false);
+      setErrorMessage(data.error);
+
+      return
+    }
+
+    return data.courses
+  }
 
   useEffect(() => {
 
-    axios
-      .get(`${API.base_link}/courses`)
-      .then((res) => {
-        setCourses(res.data);
-        setErrorMessage(null);
-        setIsLoading(false)
-      })
-      .catch((e) => {
-        console.log(e);
-        setErrorMessage(e.response?.data.message);
-      });
+    fetchData()
+    .then(res => {
+      setIsLoading(false);
+      setCourses(res)
+    })
+    .catch((e) => {
+      console.log(e);
+      setErrorMessage('Erro ao obter dados');
+    });
   }, []);
 
   if(isLoading) {
@@ -49,8 +61,14 @@ const CoursesPage = () => {
         <Notification />
       </div>
       <List>
-        {courses &&
-          courses.map((course) => <Card course={course} key={course._id} />)}
+        {coursesFiltered.length?
+          coursesFiltered.map((course) => <Card course={course} key={course._id} />) :
+          <Alert 
+            severity="warning"
+          >
+            Nenhum curso com esse nome encontrado :(
+          </Alert>
+        }
       </List>
     </Container>
   );

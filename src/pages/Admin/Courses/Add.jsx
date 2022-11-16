@@ -11,10 +11,12 @@ import { useNavigate } from 'react-router-dom';
 import { Links } from '../../../constants/links';
 import { Alert, AlertTitle } from '@mui/material';
 import AdminContent from '../AdminContent';
+import Snackbar from '../Snackbar';
 
 const AddCoursePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [snackIsOpen, setSnackIsOpen] = useState(false);
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate();
     const {
@@ -24,6 +26,7 @@ const AddCoursePage = () => {
       } = useForm({
         resolver: yupResolver(courseSchema),
       });
+
       const onSubmit = async(data, e) => {
         
         setIsLoading(true);
@@ -34,6 +37,7 @@ const AddCoursePage = () => {
             setErrorMessage(addCourseData.error);
             return 
         }
+        setSnackIsOpen(true);
         setErrorMessage(null);
         navigate(`${Links.admin.root}/${Links.admin.courses}`);
       }
@@ -86,6 +90,11 @@ const AddCoursePage = () => {
                     </ButtonContainer>
                 </Form>
             </AdminContent>
+            <Snackbar
+                isOpen={snackIsOpen}
+                setIsOpen={setSnackIsOpen}
+                type={'success'}
+            />
         </Container>
     );
 }
