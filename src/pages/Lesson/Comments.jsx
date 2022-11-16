@@ -16,6 +16,7 @@ import useAuthStore from '../../context/authStore';
 import { formatDate } from '../../service/utils';
 
 const Comment = ({data, getData}) => {
+    
     const [isLoading, setIsLoading] = useState(false);
     const { user, token } = useAuthStore((state) => ({ token: state.token, user: state.user }));
 
@@ -31,6 +32,9 @@ const Comment = ({data, getData}) => {
         await getData()
         setIsLoading(false)
     }
+
+    if(!data.author) return 
+    
     return (
         <CommentContainer>
             <AvatarContainer>
@@ -97,6 +101,7 @@ const Comments = ({courseID, lessonID}) => {
             setErrorMessage(data.error)
             return 
         }
+        console.log(data.comments)
         setAllComments(data.comments);
     }
 
