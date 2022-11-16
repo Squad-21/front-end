@@ -18,7 +18,7 @@ export function Navbar() {
         <Logo />
         <Button 
           title="Inscreva-se"
-          onClick={() => window.location.href = Links.path.register}
+          onClick={() => window.location.href = Links.register}
         />
       </LandingPageMenu>
     )

@@ -34,7 +34,7 @@ export const Links = {
           add: '/admin/cursos/add'
         }
       },
-    },
-    login: "/login",
-    register: "/registrar",
+      login: "/login",
+      register: "/registrar",
+    }
   }
