@@ -20,6 +20,10 @@ export const RouterNotAuth = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
+    path: Links.courses.root,
+    element: <LoginPage />,
+  },
+  {
     path: Links.questions,
     element: <QuestionsPage />,
   },
