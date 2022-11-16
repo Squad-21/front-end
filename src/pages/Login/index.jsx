@@ -52,7 +52,7 @@ export function LoginPage() {
     setUser(loginData.user);
     setErrorMessage(null);
     toggleNotificationVisibility(true);
-    navigate(Links.courses.root);
+    window.location.href = Links.courses.root
   }
 
   useEffect(() => {
