@@ -15,7 +15,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     if (user) {
-      navigate(Links.path.courses);
+      window.location.href = Links.path.courses
     }
   }, []);
 

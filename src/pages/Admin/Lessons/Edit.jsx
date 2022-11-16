@@ -13,11 +13,13 @@ import { Links } from "../../../constants/links";
 import useAuthStore from "../../../context/authStore";
 import LoadingPage from '../../Loading';
 import AdminContent from "../AdminContent";
+import Snackbar from "../Snackbar";
 
 const EditLessonPage = () => {
     const [courseData, setCourseData] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [snackIsOpen, setSnackIsOpen] = useState(false);
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate();
     const { courseID, lessonID } = useParams();
@@ -40,6 +42,7 @@ const EditLessonPage = () => {
             setErrorMessage(addLessonData.error);
             return 
         }
+        setSnackIsOpen(true);
         setErrorMessage(null);
         navigate(`${Links.admin.root}/${Links.admin.courses}/${courseID}/modulos/${data.module}`);
     }
@@ -156,6 +159,11 @@ const EditLessonPage = () => {
                     />
                 </ButtonContainer>
             </Form>
+            <Snackbar
+                isOpen={snackIsOpen}
+                setIsOpen={setSnackIsOpen}
+                type={'success'}
+            />
         </AdminContent>
     );
 }

@@ -12,6 +12,7 @@ import { Links } from "../../../constants/links";
 import useAuthStore from "../../../context/authStore";
 import LoadingPage from '../../Loading';
 import AdminContent from '../AdminContent';
+import Snackbar from "../Snackbar";
 
 const options = [
     {
@@ -29,6 +30,7 @@ const EditUserPage = () => {
     const [userData, setUserData] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [snackIsOpen, setSnackIsOpen] = useState(false);
     const { token } = useAuthStore((state) => ({ token: state.token }));
     const navigate = useNavigate();
     const { userID } = useParams();
@@ -49,6 +51,7 @@ const EditUserPage = () => {
             setErrorMessage(editUserData.error);
             return 
         }
+        setSnackIsOpen(true);
         setErrorMessage(null);
         navigate(Links.path.admin.users.root);
     }
@@ -144,6 +147,11 @@ const EditUserPage = () => {
                     />
                 </ButtonContainer>
             </Form>
+            <Snackbar
+                isOpen={snackIsOpen}
+                setIsOpen={setSnackIsOpen}
+                type={'success'}
+            />
         </AdminContent>
     );
 }

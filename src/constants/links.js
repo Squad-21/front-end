@@ -8,6 +8,7 @@ export const Links = {
     root: "/cursos",
     dev: "dev",
     lesson: "aulas",
+    search: 'buscar'
   },
   admin: {
     root: "/admin",
@@ -36,5 +37,8 @@ export const Links = {
       },
       login: "/login",
       register: "/registrar",
+      courses: '/cursos',
+      searchCourse: '/cursos/buscar/{searchText}',
+      lesson: '/cursos/{courseID}/aulas/{lessonID}'
     }
   }

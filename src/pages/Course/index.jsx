@@ -5,7 +5,6 @@ import Progress from './Progress';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getOneCourseAction } from "../../service/api";
 import ModulesList from "./ModulesList";
-import { useIsDesktop } from '../../hooks/useIsDesktop';
 import { isMobile } from 'react-device-detect';
 import { 
     Alert,
@@ -23,7 +22,7 @@ const CoursePage = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const { courseID } = useParams();
     const { user } = useAuthStore((state) => ({ user: state.user }));
-    const isDesktop = useIsDesktop();
+    const navigate = useNavigate();
     const lessonsDone = user?.lessons.filter(lesson => lesson.courseID == courseID).length;
     const lessonsDonePercentage = (100 * lessonsDone) / courseData?.lessons.length;
     const time = calculateHoursOfLesson(courseData?.lessons);
@@ -47,6 +46,12 @@ const CoursePage = () => {
             return 
         }
         return data.courseData
+    }
+
+    const goToFirstLesson = () => {
+        const firstLesson = courseData?.lessons[0];
+
+        navigate(Links.path.lesson.replace('{courseID}',courseID).replace('{lessonID}',firstLesson._id))
     }
 
     useEffect(() => {
@@ -85,7 +90,10 @@ const CoursePage = () => {
                 <Progress value={isNaN(lessonsDonePercentage)? 0 : lessonsDonePercentage} />
   
                 <div className="w-64 mx-auto mt-6">
-                    <Button title="Começar agora" />
+                    <Button 
+                        title="Começar agora"
+                        onClick={goToFirstLesson}
+                    />
                 </div>
             </LeftContainer>
 

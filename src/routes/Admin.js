@@ -50,6 +50,15 @@ export const RouterAdmin = createBrowserRouter([
         element: <CoursesPage />,
       },
       {
+        path: Links.courses.search,
+        children: [
+          {
+            path: ':courseSearched',
+            element: <CoursesPage />
+          }
+        ]
+      },
+      {
         path: ":courseID",
         children: [
           {
@@ -61,7 +70,7 @@ export const RouterAdmin = createBrowserRouter([
             element: <LessonPage />,
           },
         ],
-      },
+      }
     ],
   },
   {
