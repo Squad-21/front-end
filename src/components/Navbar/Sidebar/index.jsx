@@ -89,7 +89,7 @@ const Auth = () => {
       </Link>
       <Link
         className="menu-item"
-        href="#"
+        href={Links.profile}
       >
         <BsFillEmojiSunglassesFill />
         <span>Minha conta</span> 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled, { css } from "styled-components";
 import Button from "../../components/Button";
 import { 
@@ -11,26 +11,22 @@ import { Style } from "../../constants/style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { commentSchema } from "../../constants/yupSchemas";
-import { addCommentAction, deleteCommentAction, getCommentsAction } from '../../service/api';
 import useAuthStore from '../../context/authStore';
 import { formatDate } from '../../service/utils';
+import useFetchComments from '../../hooks/useFetchComments';
+import useManageComments from '../../hooks/useManageComments';
 
 const Comment = ({data, getData}) => {
-    
-    const [isLoading, setIsLoading] = useState(false);
+    const { 
+        deleteCommentAsync,
+        isLoading 
+    } = useManageComments();
     const { user, token } = useAuthStore((state) => ({ token: state.token, user: state.user }));
 
     const handleDelete = async() => {
-        setIsLoading(true)
-        const dataDelete = await deleteCommentAction(data._id, token)
+        await deleteCommentAsync({ id: data._id, token: token })
 
-        if(dataDelete.error) {
-            alert(dataDelete.error)
-            return 
-        }
-        console.log(dataDelete.message)
         await getData()
-        setIsLoading(false)
     }
 
     if(!data.author) return 
@@ -71,10 +67,10 @@ const Comment = ({data, getData}) => {
 }
 
 const Comments = ({courseID, lessonID}) => {
-    const [allComments, setAllComments] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const { token } = useAuthStore((state) => ({ token: state.token }));
+    const fetchComments = useFetchComments({ lessonID, token })
+    const manageComment = useManageComments()
     const {
         register,
         setValue,
@@ -85,38 +81,14 @@ const Comments = ({courseID, lessonID}) => {
     });
 
     const onSubmit = async(data, e) => {
-        setIsLoading(true);
-        const dataComment = await addCommentAction(data, lessonID, token);
+        await manageComment.addCommentAsync({ data, lessonID, token })
 
-        if(dataComment.error) {
-            setErrorMessage(dataComment.error)
-            return
-        }
-
-        fetchData()
+        fetchComments.getCommentsAsync()
         .then(res => {
             setValue('content', '', { shouldValidate: false });
         })
         .catch(e => setErrorMessage('Erro ao obter dados'))
     }
-
-    const fetchData = async() => {
-        setIsLoading(true);
-        const data = await getCommentsAction(lessonID, token);
-        setIsLoading(false);
-
-        if(data.error) {
-            setErrorMessage(data.error)
-            return 
-        }
-        console.log(data.comments)
-        setAllComments(data.comments);
-    }
-
-    useEffect(() => {
-        fetchData()
-        .catch(e => setErrorMessage('Erro ao obter dados'))
-    },[])
 
     return ( 
         <Container>
@@ -132,16 +104,16 @@ const Comments = ({courseID, lessonID}) => {
                     <Button
                         variant="violet"
                         title="Enviar"
-                        disabled={isLoading}
+                        disabled={fetchComments.isLoading || manageComment.isLoading}
                     />
                 </ButtonContainer>
             </Form>
             <CommentsList>
-                {allComments?.map(comment => 
+                {fetchComments.allComments?.map(comment => 
                     <Comment 
                         key={comment._id} 
                         data={comment} 
-                        getData={fetchData}
+                        getData={fetchComments.getCommentsAsync}
                     />
                 )}
             </CommentsList>

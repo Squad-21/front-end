@@ -11,13 +11,16 @@ const SearchBar = () => {
         setSearchText(e.target.value)
     }
 
-    const handleSearch = () => {
+    const handleSearch = (e) => {
+        e.preventDefault();
+        
         if(!searchText || searchText == '') return
 
+        console.log(searchText)
         window.location.href = Links.path.searchCourse.replace('{searchText}', searchText.toLowerCase())
     }
     return ( 
-        <Container>
+        <Container onSubmit={handleSearch}>
             <Input
                 value={searchText}
                 onChange={handleChange}
@@ -34,7 +37,7 @@ const SearchBar = () => {
  
 export default SearchBar;
 
-const Container = styled.div`
+const Container = styled.form`
     background-color: #FFFCFC;
     height: 40px;
     width: 20rem;
